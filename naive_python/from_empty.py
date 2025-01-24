@@ -23,14 +23,15 @@ def covers(cur_vertices):
     return True
 
 
-def enum_covers(cur_covered_vertices=[], cur_used_edges=[]):
+def enum_covers(cur_covered_vertices=[], cur_used_vertices=[]):
     if covers(cur_covered_vertices):
-        print(cur_used_edges)
+        print(cur_used_vertices)
     
     for vertice in vertices:
-        if vertice in cur_covered_vertices: continue
+        if vertice in cur_used_vertices: continue
+        taken_vertices = cur_covered_vertices
         for edge in vertices[vertice]:
-            if edge in cur_used_edges: continue
-            enum_covers(cur_covered_vertices + edges[edge], cur_used_edges + [edge])
+            taken_vertices = list(set(taken_vertices + edges[edge]))
+        enum_covers(taken_vertices, cur_used_vertices + [vertice])
 
 enum_covers()

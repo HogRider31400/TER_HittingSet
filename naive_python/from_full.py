@@ -24,16 +24,16 @@ def covers(cur_vertices):
     return True
 
 
-def enum_covers(cur_covered_vertices=list(vertices.keys()), cur_used_edges=list(edges.keys())):
-    for edge in cur_used_edges:
-        new_edges = copy.copy(cur_used_edges)
-        new_edges.remove(edge)
+def enum_covers(cur_covered_vertices=list(vertices.keys()), cur_used_vertices=list(vertices.keys())):
+    for vertice in cur_used_vertices:
+        new_used_vertices = copy.copy(cur_used_vertices)
+        new_used_vertices.remove(vertice)
         new_vertices = []
-        for edge in new_edges:
-            for vertice in edges[edge]:
-                new_vertices.append(vertice)
+        for cur_used_vertice in new_used_vertices:
+            for edge in vertices[cur_used_vertice]:
+                new_vertices = list(set(new_vertices + edges[edge]))
         if covers(new_vertices):
-            print(new_edges)
-            enum_covers(new_vertices, new_edges)  
-
+            print(new_used_vertices)
+            enum_covers(new_vertices, new_used_vertices)  
+#Manque la couverture qui prend toutes les vertices, mais pg
 enum_covers()
