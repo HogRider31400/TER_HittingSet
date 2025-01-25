@@ -4,6 +4,26 @@
 #include "naive.c"
 #include "graph_reader.c"
 
+//Prend en paramètre une fonction qui prend un graphe un paramètre et l'appelle pour la chronométrer
+double chrono_func( void func(Graph*), Graph* graph) {
+    LARGE_INTEGER start, end, freq;
+    QueryPerformanceFrequency(&freq);
+    QueryPerformanceCounter(&start);
+
+    func(graph);
+
+    QueryPerformanceCounter(&end);
+    return (end.QuadPart - start.QuadPart) / (double)freq.QuadPart;
+}
+
+//Voici un exemple de définition d'une fonction pour appeler le chronométrage, on fait le travail préliminaire pour définir les paramètres supplémentaires puis on appelle la fonction
+void launch_naive_empty(Graph* graph) {
+    iList* cur_c = create_list();
+    iList* cur_v = create_list();
+
+    enum_covers(graph, cur_c, cur_v);
+}
+
 int main(void) {
 
     Graph* graph = read_graph_from_file("./example.txt");
@@ -20,23 +40,8 @@ int main(void) {
         printf("\n");
     }
 
-    iList* cur_c = create_list();
-    iList* cur_v = create_list();
 
-    //Ici on s'occupe de chronométrer la fonction en utilisant l'API de Windows
-    //QueryPerformanceCounter nous permet de récupérer le nombre de ticks effectués, et QueryPerformanceFrequency nous permet de savoir combien de ticks sont effectués par seconde, afin de pouvoir restituer le calcul
-    //Pour plus de renseignements :
-    //https://learn.microsoft.com/fr-fr/windows/win32/api/profileapi/nf-profileapi-queryperformancefrequency
-    //https://learn.microsoft.com/fr-fr/windows/win32/api/profileapi/nf-profileapi-queryperformancecounter
-    LARGE_INTEGER start, end, freq;
-    QueryPerformanceFrequency(&freq);
-    QueryPerformanceCounter(&start);
-
-    enum_covers(graph, cur_c, cur_v);
-
-    QueryPerformanceCounter(&end);
-    double time_taken = (end.QuadPart - start.QuadPart) / (double)freq.QuadPart;
-    printf("Time taken: %f seconds\n", time_taken);
+    printf("Time taken: %f seconds\n", chrono_func(launch_naive_empty, graph));
 
 
     return 0;
