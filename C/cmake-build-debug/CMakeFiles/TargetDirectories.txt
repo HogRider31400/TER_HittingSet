@@ -1,0 +1,3 @@
+C:/Users/Alex/Desktop/TER_HittingSet/C/cmake-build-debug/CMakeFiles/C.dir
+C:/Users/Alex/Desktop/TER_HittingSet/C/cmake-build-debug/CMakeFiles/edit_cache.dir
+C:/Users/Alex/Desktop/TER_HittingSet/C/cmake-build-debug/CMakeFiles/rebuild_cache.dir
