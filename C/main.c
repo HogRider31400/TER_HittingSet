@@ -29,12 +29,14 @@ int main(void) {
     printf("start\n");
     printf("nbs : %d %d\n",graph->nb_edges,graph->nb_vertices);
     for (int i = 0; i < graph->nb_vertices;i++) {
+        if (graph->vertices[i] == NULL) continue;
         printf("Noeud %d : ", graph->vertices[i]->id);
         print_list(graph->vertices[i]->edges);
         printf("\n");
     }
     printf("\n");
     for (int i = 0; i < graph->nb_edges; i++) {
+        if (graph->edges[i] == NULL) continue;
         printf("Arete %d : ", graph->edges[i]->id);
         print_list(graph->edges[i]->vertices);
         printf("\n");

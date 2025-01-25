@@ -7,8 +7,8 @@
 
 #include "List.h"
 #include <stddef.h>
-#define MAX_EDGES 100
-#define MAX_VERTICES 100
+#define MAX_EDGES 200
+#define MAX_VERTICES 200
 
 typedef struct Vertex {
     int id;
