@@ -5,7 +5,9 @@
 #include <math.h>
 #include <stdio.h>
 #include <stdlib.h>
-
+#include <stddef.h>
+#include "graph_reader.h"
+#include "HGraph.h"
 /* This code is public domain -- Will Hartung 4/9/09 */
 // https://stackoverflow.com/questions/735126/are-there-alternate-implementations-of-gnu-getline-interface/735472#735472
 
@@ -111,16 +113,19 @@ iList* parse_line(char *line, int size) {
  */
 
 Graph* read_graph_from_file(char *filename) {
+    printf("ici\n");
     FILE *file = fopen(filename, "r");
     if (file == NULL) {
+        printf("Erreur: Impossible d'ouvrir %s\n", filename);
         return NULL;
     }
+    printf("ici\n");
     char * line = NULL;
     size_t len = 0;
     ssize_t read;
 
     Graph* graph = create_graph();
-
+    printf("ici\n");
     while ((read = getline(&line, &len, file)) != -1) {
         //On parse et on ajoute l'hyper arête au graphe
         iList* line_list = parse_line(line,read);

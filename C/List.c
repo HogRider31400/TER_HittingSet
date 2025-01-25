@@ -1,17 +1,10 @@
 #include <stddef.h>
 #include <stdlib.h>
+#include <stdio.h>
+#include "List.h"
 //
 // Created by Alex on 25/01/2025.
 //
-typedef struct iList {
-    struct Node* head;
-} iList;
-
-typedef struct Node {
-    int value;
-    struct Node* next;
-} Node;
-
 iList* create_list() {
     iList* list = malloc(sizeof(iList));
     list->head = NULL;

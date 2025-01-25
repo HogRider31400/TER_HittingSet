@@ -2,26 +2,9 @@
 // Created by Alex on 25/01/2025.
 //
 //#include "List.c"
-#include "List.c"
-#define MAX_EDGES 100
-#define MAX_VERTICES 100
-
-typedef struct Vertex {
-    int id;
-    iList* edges;
-} Vertex;
-
-typedef struct Edge {
-    int id;
-    iList* vertices;
-} Edge;
-
-typedef struct Graph {
-    Vertex* vertices[MAX_VERTICES];
-    Edge* edges[MAX_EDGES];
-    int nb_edges;
-    int nb_vertices;
-} Graph;
+#include "List.h"
+#include "HGraph.h"
+#include <stdlib.h>
 
 Vertex* create_vertex(){
     Vertex* vertex = malloc(sizeof(Vertex));
