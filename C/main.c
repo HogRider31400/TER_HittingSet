@@ -1,6 +1,5 @@
 #include <stdio.h>
-#include "List.c"
-#include "HGraph.c"
+#include "naive.c"
 
 int main(void) {
     printf("Hello, World!\n");
@@ -78,6 +77,10 @@ int main(void) {
         printf("\n");
     }
 
+    iList* cur_c = create_list();
+    iList* cur_v = create_list();
+
+    enum_covers(graph, cur_c, cur_v);
 
     return 0;
 }

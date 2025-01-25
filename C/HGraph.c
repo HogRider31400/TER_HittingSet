@@ -2,7 +2,7 @@
 // Created by Alex on 25/01/2025.
 //
 //#include "List.c"
-
+#include "List.c"
 #define MAX_EDGES 10
 #define MAX_VERTICES 10
 
