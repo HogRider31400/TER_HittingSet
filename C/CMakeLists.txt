@@ -6,4 +6,5 @@ set(CMAKE_C_STANDARD 23)
 add_executable(C main.c
         List.c
         HGraph.c
-        naive.c)
+        naive.c
+        graph_reader.c)

@@ -40,6 +40,12 @@ Graph* create_graph(){ //potentiellement ajouter vertices et edges en param pour
     Graph* graph = malloc(sizeof(Graph)); //je sais plus si il faut cast
     graph->nb_edges = 0;
     graph->nb_vertices = 0;
+    for (int i = 0; i < MAX_VERTICES; i++) {
+        graph->vertices[i] = NULL;
+    }
+    for (int i = 0; i < MAX_EDGES; i++) {
+        graph->edges[i] = NULL;
+    }
     return graph;
 }
 
