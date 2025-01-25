@@ -58,6 +58,13 @@ int get(iList* list, int index) {
     return current->value;
 }
 
+int tail(iList* list) {
+    if (list->head == NULL) return -1;
+    Node* current = list->head;
+    while (current->next != NULL) current = current->next;
+    return current->value;
+}
+
 void print_list(iList* list) {
     //if (list->head == NULL) return;
     Node* current = list->head;

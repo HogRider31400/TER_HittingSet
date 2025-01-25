@@ -4,6 +4,7 @@
 
 #include <stdio.h>
 #include "naive.h"
+
 int covers(Graph* graph, iList* vertices) {
 
     for (int i = 0; i < graph->nb_vertices; i++) {
@@ -16,49 +17,31 @@ int covers(Graph* graph, iList* vertices) {
 }
 
 void enum_covers(Graph* graph, iList* cur_covered_vertices, iList* cur_used_vertices) {
-    //print_list(cur_covered_vertices);
-    //printf("\n");
     if (covers(graph, cur_covered_vertices) == 1) {
         print_list(cur_used_vertices);
         printf(" est un coverage\n");
         return;
     }
+    //On détermine à partir de quel indice on commence
+    //Tant qu'on a pas vu la dernière arête ajoutée on ne fait rien
+    //Si on a pas encore ajouté d'arête on ignore cette partie
+    int last_seen = (cur_used_vertices->head != NULL ? 0 : 1);
+    int last_used = tail(cur_used_vertices);
 
     for (int i = 0; i < graph->nb_vertices; i++) {
-        if (contains(cur_used_vertices, graph->vertices[i]->id) == 1) continue;
-        /*printf("Avant deepcopy");
-        print_list(cur_covered_vertices);
-        printf("\n"); */
-        iList* new_vertices = deep_copy(cur_covered_vertices);
-        /*printf("Après deepcopy");
-        print_list(new_vertices);
-        printf("\n"); */
-        for (Node* cur = graph->vertices[i]->edges->head; cur != NULL; cur = cur->next) {
-            /*printf("On a :");
-            print_list(new_vertices);
-            printf(", on veut y ajouter :");
-            print_list(graph->edges[cur->value-1]->vertices);
-            printf("\n"); */
-            merge_unique(new_vertices, graph->edges[cur->value-1]->vertices);
-            /*p0rintf("ça donne :");
-            print_list(new_vertices);
-            printf("\n");*/
+        if (last_seen == 0) {
+            if (graph->vertices[i]->id == last_used) {
+                last_seen = 1;
+            }
+            continue;
         }
-        /*printf("aled : ");
-        print_list(cur_used_vertices);
-        printf("\n"); */
+        if (contains(cur_used_vertices, graph->vertices[i]->id) == 1) continue;
+        iList* new_vertices = deep_copy(cur_covered_vertices);
+        for (Node* cur = graph->vertices[i]->edges->head; cur != NULL; cur = cur->next) {
+            merge_unique(new_vertices, graph->edges[cur->value-1]->vertices);
+        }
         append(cur_used_vertices, graph->vertices[i]->id);
-        /*printf("aled2 :");
-        print_list(cur_used_vertices);
-        printf("\n"); */
         enum_covers(graph, new_vertices, cur_used_vertices);
-        /*printf("On remove %d ", graph->vertices[i]->id);
-        print_list(cur_used_vertices);
-        printf("\n"); */
         remove_value(cur_used_vertices,graph->vertices[i]->id);
-        //print_list(cur_used_vertices);
-        //printf("\n");
-
     }
-
 }

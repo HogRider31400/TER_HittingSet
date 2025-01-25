@@ -24,4 +24,5 @@ int contains(iList* elems, int elem_value);
 iList* deep_copy(iList* list);
 void merge_unique(iList* l1, iList* l2);
 void append_unique(iList* list, int elem_value);
+int tail(iList* list);
 #endif //LIST_H
