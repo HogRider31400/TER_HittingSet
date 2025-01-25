@@ -20,8 +20,8 @@ void enum_covers(Graph* graph, iList* cur_covered_vertices, iList* cur_used_vert
     //print_list(cur_used_vertices);
     //printf("\n");
     if (covers(graph, cur_covered_vertices) == 1) {
-        print_list(cur_used_vertices);
-        printf(" est un coverage\n");
+        //print_list(cur_used_vertices);
+        //printf(" est un coverage\n");
     }
 
     for (int i = 0; i < graph->nb_vertices; i++) {

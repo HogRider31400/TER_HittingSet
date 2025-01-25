@@ -3,8 +3,8 @@
 //
 //#include "List.c"
 #include "List.c"
-#define MAX_EDGES 10
-#define MAX_VERTICES 10
+#define MAX_EDGES 100
+#define MAX_VERTICES 100
 
 typedef struct Vertex {
     int id;
