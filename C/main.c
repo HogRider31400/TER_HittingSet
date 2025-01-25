@@ -41,6 +41,6 @@ int main(void) {
 
 
     printf("Time taken: %f seconds\n", chrono_func(enum_covers_iterative, graph));
-    
+
     return 0;
 }

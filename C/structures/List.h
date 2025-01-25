@@ -15,6 +15,15 @@ typedef struct Node {
     struct Node* next;
 } Node;
 
+typedef struct NodeList {
+    iList* value;
+    struct NodeList* next;
+} NodeList;
+
+typedef struct iListList {
+    NodeList* head;
+} iListList;
+
 iList* create_list();
 void append(iList* list, int value);
 void remove_value(iList* list, int value);
@@ -25,4 +34,8 @@ iList* deep_copy(iList* list);
 void merge_unique(iList* l1, iList* l2);
 void append_unique(iList* list, int elem_value);
 int tail(iList* list);
+
+iListList* create_list_list();
+void append_list(iListList* list, iList* elem_list);
+void print_list_list(iListList* list);
 #endif //LIST_H

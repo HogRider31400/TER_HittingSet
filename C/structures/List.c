@@ -110,3 +110,35 @@ void append_unique(iList* list, int elem_value) {
     if (contains(list, elem_value) == 1) return;
     append(list,elem_value);
 }
+
+//Ici on s'affaire aux listes de listes
+iListList* create_list_list() {
+    iListList* list = malloc(sizeof(iListList));
+    list->head = NULL;
+}
+
+void append_list(iListList* list, iList* elem_list) {
+    NodeList* new_node = malloc(sizeof(NodeList));
+    new_node->value = elem_list;
+    new_node->next = NULL;
+
+    if (list->head == NULL) {
+        list->head = new_node;
+        return;
+    }
+
+    Node* current = list->head;
+    while (current->next != NULL) {
+        current = current->next;
+    }
+    current->next = new_node;
+}
+
+void print_list_list(iListList* list) {
+    NodeList* current = list->head;
+    while (current != NULL) {
+        print_list(current->value);
+        printf("\n");
+        current = current->next;
+    }
+}

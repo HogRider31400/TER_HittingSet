@@ -5,6 +5,28 @@
 #include <stdio.h>
 #include "naive.h"
 
+//Ici on regarde si l1 contient l2, donc si l2 C l1
+int is_subset(iList* l1, iList* l2) {
+    Node* current = l2->head;
+
+    while (current != NULL) {
+        if (contains(l1, current->value) == 0) return 0;;
+        current = current->next;
+    }
+
+    return 1;
+}
+
+//Maintenant on regarde si la famille list contient un élément qui est un sous ensemble de slist
+int has_subset(iListList* list, iList* slist) {
+    NodeList* current = list->head;
+    while (current != NULL) {
+        if (is_subset(slist, current->value) == 1) return 1;
+        current = current->next;
+    }
+    return 0;
+}
+
 int covers(Graph* graph, iList* vertices) {
 
     for (int i = 0; i < graph->nb_vertices; i++) {
@@ -48,6 +70,9 @@ void enum_covers_recursive(Graph* graph, iList* cur_covered_vertices, iList* cur
 
 void enum_covers_iterative(Graph* graph) {
     //On init la queue
+    //List contenant toutes les couvertures minimales
+    iListList* all_covers = create_list_list();
+
     Queue* queue = queue_create();
     //On init l'élément initial
     iList* base_covered_vertices = create_list();
@@ -60,7 +85,13 @@ void enum_covers_iterative(Graph* graph) {
 
         if (covers(graph, cur->covered_vertices) == 1) {
             print_list(cur->used_vertices);
+            //On vérifie qu'on en casse pas la minimalité
+            if (has_subset(all_covers, cur->used_vertices) == 0) {
+                append_list(all_covers, deep_copy(cur->used_vertices));
+            }
             printf(" est un coverage\n");
+            printf("On a \n");
+            print_list_list(all_covers);
             continue;
         }
 
