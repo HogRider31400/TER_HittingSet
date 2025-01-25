@@ -55,11 +55,11 @@ build CMakeFiles/C.dir/main.c.obj: C_COMPILER__C_unscanned_Debug C$:/Users/Alex/
   OBJECT_DIR = CMakeFiles\C.dir
   OBJECT_FILE_DIR = CMakeFiles\C.dir
 
-build CMakeFiles/C.dir/List.c.obj: C_COMPILER__C_unscanned_Debug C$:/Users/Alex/Desktop/TER_HittingSet/C/List.c || cmake_object_order_depends_target_C
-  DEP_FILE = CMakeFiles\C.dir\List.c.obj.d
+build CMakeFiles/C.dir/structures/List.c.obj: C_COMPILER__C_unscanned_Debug C$:/Users/Alex/Desktop/TER_HittingSet/C/structures/List.c || cmake_object_order_depends_target_C
+  DEP_FILE = CMakeFiles\C.dir\structures\List.c.obj.d
   FLAGS = -g -std=gnu2x -fdiagnostics-color=always
   OBJECT_DIR = CMakeFiles\C.dir
-  OBJECT_FILE_DIR = CMakeFiles\C.dir
+  OBJECT_FILE_DIR = CMakeFiles\C.dir\structures
 
 build CMakeFiles/C.dir/HGraph.c.obj: C_COMPILER__C_unscanned_Debug C$:/Users/Alex/Desktop/TER_HittingSet/C/HGraph.c || cmake_object_order_depends_target_C
   DEP_FILE = CMakeFiles\C.dir\HGraph.c.obj.d
@@ -79,6 +79,12 @@ build CMakeFiles/C.dir/graph_reader.c.obj: C_COMPILER__C_unscanned_Debug C$:/Use
   OBJECT_DIR = CMakeFiles\C.dir
   OBJECT_FILE_DIR = CMakeFiles\C.dir
 
+build CMakeFiles/C.dir/structures/Queue.c.obj: C_COMPILER__C_unscanned_Debug C$:/Users/Alex/Desktop/TER_HittingSet/C/structures/Queue.c || cmake_object_order_depends_target_C
+  DEP_FILE = CMakeFiles\C.dir\structures\Queue.c.obj.d
+  FLAGS = -g -std=gnu2x -fdiagnostics-color=always
+  OBJECT_DIR = CMakeFiles\C.dir
+  OBJECT_FILE_DIR = CMakeFiles\C.dir\structures
+
 
 # =============================================================================
 # Link build statements for EXECUTABLE target C
@@ -87,7 +93,7 @@ build CMakeFiles/C.dir/graph_reader.c.obj: C_COMPILER__C_unscanned_Debug C$:/Use
 #############################################
 # Link the executable C.exe
 
-build C.exe: C_EXECUTABLE_LINKER__C_Debug CMakeFiles/C.dir/main.c.obj CMakeFiles/C.dir/List.c.obj CMakeFiles/C.dir/HGraph.c.obj CMakeFiles/C.dir/naive.c.obj CMakeFiles/C.dir/graph_reader.c.obj
+build C.exe: C_EXECUTABLE_LINKER__C_Debug CMakeFiles/C.dir/main.c.obj CMakeFiles/C.dir/structures/List.c.obj CMakeFiles/C.dir/HGraph.c.obj CMakeFiles/C.dir/naive.c.obj CMakeFiles/C.dir/graph_reader.c.obj CMakeFiles/C.dir/structures/Queue.c.obj
   FLAGS = -g
   LINK_LIBRARIES = -lkernel32 -luser32 -lgdi32 -lwinspool -lshell32 -lole32 -loleaut32 -luuid -lcomdlg32 -ladvapi32
   OBJECT_DIR = CMakeFiles\C.dir

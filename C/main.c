@@ -3,6 +3,7 @@
 #include <windows.h>
 #include "naive.h"
 #include "graph_reader.h"
+#include "structures/Queue.h"
 //Prend en paramètre une fonction qui prend un graphe un paramètre et l'appelle pour la chronométrer
 double chrono_func( void func(Graph*), Graph* graph) {
     LARGE_INTEGER start, end, freq;
@@ -20,7 +21,7 @@ void launch_naive_empty(Graph* graph) {
     iList* cur_c = create_list();
     iList* cur_v = create_list();
 
-    enum_covers(graph, cur_c, cur_v);
+    enum_covers_recursive(graph, cur_c, cur_v);
 }
 
 int main(void) {
@@ -39,8 +40,7 @@ int main(void) {
     }
 
 
-    printf("Time taken: %f seconds\n", chrono_func(launch_naive_empty, graph));
-
-
+    printf("Time taken: %f seconds\n", chrono_func(enum_covers_iterative, graph));
+    
     return 0;
 }

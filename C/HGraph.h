@@ -5,7 +5,7 @@
 #ifndef HGRAPH_H
 #define HGRAPH_H
 
-#include "List.h"
+#include "structures/List.h"
 #include <stddef.h>
 #define MAX_EDGES 200
 #define MAX_VERTICES 200
