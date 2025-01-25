@@ -7,7 +7,6 @@
 int covers(Graph* graph, iList* vertices) {
 
     for (int i = 0; i < graph->nb_vertices; i++) {
-        if (graph->vertices[i] == NULL) continue;
         if (contains(vertices, graph->vertices[i]->id) == 0) {
             return 0;
         }
@@ -26,7 +25,6 @@ void enum_covers(Graph* graph, iList* cur_covered_vertices, iList* cur_used_vert
     }
 
     for (int i = 0; i < graph->nb_vertices; i++) {
-        if (graph->vertices[i] == NULL) continue;
         if (contains(cur_used_vertices, graph->vertices[i]->id) == 1) continue;
         /*printf("Avant deepcopy");
         print_list(cur_covered_vertices);
@@ -36,7 +34,6 @@ void enum_covers(Graph* graph, iList* cur_covered_vertices, iList* cur_used_vert
         print_list(new_vertices);
         printf("\n"); */
         for (Node* cur = graph->vertices[i]->edges->head; cur != NULL; cur = cur->next) {
-            if (graph->edges[i] == NULL) continue;
             /*printf("On a :");
             print_list(new_vertices);
             printf(", on veut y ajouter :");

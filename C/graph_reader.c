@@ -7,6 +7,9 @@
 #include <stdlib.h>
 #include <stddef.h>
 #include "graph_reader.h"
+
+#include <string.h>
+
 #include "HGraph.h"
 /* This code is public domain -- Will Hartung 4/9/09 */
 // https://stackoverflow.com/questions/735126/are-there-alternate-implementations-of-gnu-getline-interface/735472#735472
@@ -67,7 +70,6 @@ iList* parse_line(char *line, int size) {
     iList* list = create_list();
 
     int cur_nb = 0;
-    int cur_nb_length = 0;
 
     for (int i = 0; i < size; i++) {
         if (line[i] == '\n') break;
@@ -75,19 +77,14 @@ iList* parse_line(char *line, int size) {
         if (line[i] == ' ') {
             append(list,cur_nb);
             cur_nb = 0;
-            cur_nb_length = 0;
         }
         else {
             //Ce n'est pas un espace donc à priori c'est un chiffre, on vérifie bien que c'est un chiffre
             //puis on l'ajoute au nombre construit
             int cur_digit = line[i] - '0';
-            if (cur_digit > 9) {
-                printf("wtf ??? %d \n" , cur_digit);
-            }
-            else {
-                cur_nb += cur_digit * pow(10, cur_nb_length);
-                cur_nb_length++;
-            }
+
+            cur_nb = cur_nb*10 +  cur_digit;
+            //printf("char : %c, digit %d, cur_nb %d \n",line[i],cur_digit,cur_nb);
         }
     }
     if (cur_nb != 0) append(list,cur_nb);
@@ -113,19 +110,19 @@ iList* parse_line(char *line, int size) {
  */
 
 Graph* read_graph_from_file(char *filename) {
-    printf("ici\n");
+    //printf("ici\n");
     FILE *file = fopen(filename, "r");
     if (file == NULL) {
         printf("Erreur: Impossible d'ouvrir %s\n", filename);
         return NULL;
     }
-    printf("ici\n");
+    //printf("ici\n");
     char * line = NULL;
     size_t len = 0;
     ssize_t read;
 
     Graph* graph = create_graph();
-    printf("ici\n");
+    //printf("ici\n");
     while ((read = getline(&line, &len, file)) != -1) {
         //On parse et on ajoute l'hyper arête au graphe
         iList* line_list = parse_line(line,read);
@@ -140,19 +137,28 @@ Graph* read_graph_from_file(char *filename) {
     if (line)
         free(line);
 
-    //On a toutes les hyper arêtes il faut reconstruire les sommets à partir de ça
+    //on init un tableau de correspondance pour que tout tienne sur un tableau
+    //car sinon il y a des trous, beaucoup
+    int corresp[MAX_VERTICES];
+    memset(corresp, -1, sizeof(corresp));
 
+    //On a toutes les hyper arêtes il faut reconstruire les sommets à partir de ça
     for (int i = 0; i < graph->nb_edges; i++) {
         Edge* edge = graph->edges[i];
 
         for (Node* cur = edge->vertices->head; cur != NULL; cur = cur->next) {
+            if (corresp[cur->value-1] == -1) {
+                corresp[cur->value-1] = graph->nb_vertices;
+            }
+            int id = corresp[cur->value-1];
+            //printf("%d %d \n",cur->value-1,id);
             //On vérifie si le sommet a déjà été init, si non on le fait
-            if (graph->vertices[cur->value-1] == NULL) {
-                graph->vertices[cur->value-1] = create_vertex();
-                graph->vertices[cur->value-1]->id = cur->value;
+            if (graph->vertices[id] == NULL) {
+                graph->vertices[id] = create_vertex();
+                graph->vertices[id]->id = cur->value;
                 graph->nb_vertices++;
             }
-            append(graph->vertices[cur->value-1]->edges, edge->id);
+            append(graph->vertices[id]->edges, edge->id);
         }
 
     }
