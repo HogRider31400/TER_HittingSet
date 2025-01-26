@@ -6,11 +6,13 @@ file(COPY ${CMAKE_SOURCE_DIR}/data DESTINATION ${CMAKE_BINARY_DIR})
 add_executable(C main.c
         structures/List.c
         HGraph.c
-        naive.c
+        algorithms/naive.c
         graph_reader.c
         structures/List.h
         HGraph.h
         graph_reader.h
-        naive.h
+        algorithms/naive.h
         structures/Queue.c
-        structures/Queue.h)
+        structures/Queue.h
+        algorithms/berge.c
+        algorithms/berge.h)

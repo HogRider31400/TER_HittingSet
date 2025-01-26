@@ -1,9 +1,10 @@
 #include <stdio.h>
 #include <time.h>
 #include <windows.h>
-#include "naive.h"
+#include "algorithms/naive.h"
 #include "graph_reader.h"
 #include "structures/Queue.h"
+#include "algorithms/berge.h"
 //Prend en paramètre une fonction qui prend un graphe un paramètre et l'appelle pour la chronométrer
 double chrono_func( void func(Graph*), Graph* graph) {
     LARGE_INTEGER start, end, freq;
@@ -40,7 +41,7 @@ int main(void) {
     }
 
 
-    printf("Time taken: %f seconds\n", chrono_func(enum_covers_iterative, graph));
+    printf("Time taken: %f seconds\n", chrono_func(berge_algorithm, graph));
 
     return 0;
 }

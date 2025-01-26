@@ -8,6 +8,7 @@
 iList* create_list() {
     iList* list = malloc(sizeof(iList));
     list->head = NULL;
+    list->size = 0;
     return list;
 }
 void append(iList* list, int value) {
@@ -25,6 +26,7 @@ void append(iList* list, int value) {
         current = current->next;
     }
     current->next = new_node;
+    list->size++;
 }
 void remove_value(iList* list, int value) {
     if (list->head == NULL) return;
@@ -46,6 +48,7 @@ void remove_value(iList* list, int value) {
         current->next = current->next->next;
         free(to_delete);
     }
+    list->size--;
 }
 int get(iList* list, int index) {
     if (list->head == NULL) return -1;
@@ -115,6 +118,7 @@ void append_unique(iList* list, int elem_value) {
 iListList* create_list_list() {
     iListList* list = malloc(sizeof(iListList));
     list->head = NULL;
+    list->size = 0;
 }
 
 void append_list(iListList* list, iList* elem_list) {
@@ -132,6 +136,8 @@ void append_list(iListList* list, iList* elem_list) {
         current = current->next;
     }
     current->next = new_node;
+
+    list->size++;
 }
 
 void print_list_list(iListList* list) {
@@ -141,4 +147,37 @@ void print_list_list(iListList* list) {
         printf("\n");
         current = current->next;
     }
+}
+
+void swap_list(NodeList* n1, NodeList* n2) {
+
+    iList* temp = n1->value;
+
+    n1->value = n2->value;
+    n2->value = temp;
+
+    //free temp ?
+
+}
+
+void bubble_sort_list(iListList* list) {
+    if (list == NULL) return;
+    //printf("CICICICI\n");
+    for (int cur_iter = 0; cur_iter < list->size; cur_iter++) {
+        //print_list_list(list);
+        NodeList* current = list->head;
+        NodeList* previous = NULL;
+        while (current != NULL) {
+            if (previous != NULL) {
+                if (previous->value->size > current->value->size) {
+                    swap_list(previous, current);
+                }
+            }
+
+            previous = current;
+            current = current->next;
+        }
+
+    }
+
 }

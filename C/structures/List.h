@@ -8,6 +8,7 @@
 
 typedef struct iList {
     struct Node* head;
+    int size;
 } iList;
 
 typedef struct Node {
@@ -22,6 +23,7 @@ typedef struct NodeList {
 
 typedef struct iListList {
     NodeList* head;
+    int size;
 } iListList;
 
 iList* create_list();
@@ -38,4 +40,6 @@ int tail(iList* list);
 iListList* create_list_list();
 void append_list(iListList* list, iList* elem_list);
 void print_list_list(iListList* list);
+void bubble_sort_list(iListList* list);
+void swap_list(NodeList* n1, NodeList* n2);
 #endif //LIST_H
