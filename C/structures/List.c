@@ -15,7 +15,7 @@ void append(iList* list, int value) {
     Node* new_node = malloc(sizeof(Node));
     new_node->value = value;
     new_node->next = NULL;
-
+    list->size++;
     if (list->head == NULL) {
         list->head = new_node;
         return;
@@ -26,7 +26,6 @@ void append(iList* list, int value) {
         current = current->next;
     }
     current->next = new_node;
-    list->size++;
 }
 void remove_value(iList* list, int value) {
     if (list->head == NULL) return;
@@ -64,7 +63,10 @@ int get(iList* list, int index) {
 int tail(iList* list) {
     if (list->head == NULL) return -1;
     Node* current = list->head;
-    while (current->next != NULL) current = current->next;
+    printf("%d\n", current->value);
+    while (current->next != NULL) {
+        current = current->next;
+    }
     return current->value;
 }
 

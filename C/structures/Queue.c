@@ -4,6 +4,7 @@
 
 #include "Queue.h"
 
+#include <stdio.h>
 #include <stdlib.h>
 
 Queue* queue_create() {
@@ -38,5 +39,43 @@ QueueElem* queue_pop(Queue* queue) {
         queue->tail = NULL;
     }
 
+    return pop_elem;
+}
+QueueA* queue_a_create() {
+    QueueA* queue = malloc(sizeof(QueueA));
+    queue->elems = malloc(DEFAULT_SIZE * sizeof(QueueAElem));
+    queue->cur_size = 0;
+    queue->head = 0;
+    queue->tail = 0;
+    queue->max_size = DEFAULT_SIZE;
+    return queue;
+}
+
+void queue_a_add(QueueA* queue, iList* covered_vertices, iList* used_vertices) {
+    QueueAElem* new_elem = malloc(sizeof(QueueAElem));
+    new_elem->covered_vertices = deep_copy(covered_vertices);
+    new_elem->used_vertices = deep_copy(used_vertices);
+
+    if (queue->cur_size + 1 >= queue->max_size) {
+        queue->elems = realloc(queue->elems, 2 * queue->max_size * sizeof(QueueAElem));
+        queue->max_size *= 2;
+    }
+
+    queue->elems[queue->tail] = *new_elem;
+    free(new_elem);
+
+    queue->tail = (queue->tail + 1) % queue->max_size;
+    queue->cur_size++;
+}
+
+QueueAElem queue_a_pop(QueueA* queue) {
+    if (queue->cur_size == 0) {
+        QueueAElem empty = {NULL, NULL};
+        return empty;
+    }
+
+    QueueAElem pop_elem = queue->elems[queue->head];
+    queue->head = (queue->head + 1) % queue->max_size;
+    queue->cur_size--;
     return pop_elem;
 }

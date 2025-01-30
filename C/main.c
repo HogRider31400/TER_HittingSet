@@ -41,7 +41,7 @@ int main(void) {
     }
 
 
-    printf("Time taken: %f seconds\n", chrono_func(berge_algorithm, graph));
+    printf("Time taken: %f seconds\n", chrono_func(enum_covers_iterative_a, graph));
 
     return 0;
 }
