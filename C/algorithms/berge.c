@@ -3,7 +3,9 @@
 //
 #include "berge.h"
 
-//Implémentation de l'opérateur V décrit pare 17 du papier/de la thèse de M. Matthias Hagen
+#include <stdio.h>
+
+//Implémentation de l'opérateur V décrit page 17 du papier/de la thèse de M. Matthias Hagen
 iListList* V_operator(iListList* l1, iListList* l2) {
     iListList* result = create_list_list();
 
@@ -18,6 +20,13 @@ iListList* V_operator(iListList* l1, iListList* l2) {
             }
             append_list(result,cur_result);
         }
+    }
+
+    for (NodeList* current_l2 = l2->head; current_l2 != NULL; current_l2 = current_l2->next) {
+        append_list(result, deep_copy(current_l2->value));
+    }
+    for (NodeList* current_l1 = l1->head; current_l1 != NULL; current_l1 = current_l1->next) {
+        append_list(result, deep_copy(current_l1->value));
     }
 
     return result;
@@ -92,26 +101,12 @@ void berge_algorithm(Graph* graph) {
         //Puis on regarde
         iListList* filtered_covers = create_list_list();
 
+        bubble_sort_list(new_covers);
+
         //Pour chaque produit de V, on le minimise autant qu'on peut en enlever
         for (NodeList* current = new_covers->head; current != NULL; current = current->next) {
             //printf("On regarde actuellement : "); print_list(current->value); printf("elle donne %d à la couverture \n",(specialized_covers(graph, current->value,i+1)));
             iList* cur_cover = deep_copy(current->value);
-            //Tant qu'on trouve un sommet à supprimer, on le fait
-            while (1) {
-                int found = 0;
-                iList* cur_cover_copy = deep_copy(cur_cover);
-                for (Node* cur = cur_cover->head; cur != NULL; cur = cur->next) {
-                    remove_value(cur_cover_copy, cur->value);
-                    if (specialized_covers(graph, cur_cover_copy,i+1) == 1) {
-                        found = 1;
-                        cur_cover = deep_copy(cur_cover_copy);
-                        break;
-                    }
-                    cur_cover_copy = deep_copy(cur_cover);
-                }
-
-                if (found == 0) break;
-            }
 
             //Si c'est pas une couverture on fait rien
             if (specialized_covers(graph, cur_cover,i+1) == 0) continue;
