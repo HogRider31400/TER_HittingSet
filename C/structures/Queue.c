@@ -8,7 +8,7 @@
 #include <stdlib.h>
 
 Queue* queue_create() {
-    Queue* queue = (Queue*)malloc(sizeof(Queue));
+    Queue* queue = malloc(sizeof(Queue));
     queue->size = 0;
     queue->head = NULL;
     queue->tail = NULL;
@@ -16,7 +16,7 @@ Queue* queue_create() {
 }
 
 void queue_add(Queue* queue, iList* covered_vertices, iList* used_vertices) {
-    QueueElem* new_elem = (QueueElem*)malloc(sizeof(QueueElem));
+    QueueElem* new_elem = malloc(sizeof(QueueElem));
     new_elem->covered_vertices = covered_vertices;
     new_elem->used_vertices = used_vertices;
     new_elem->next = NULL;
@@ -55,14 +55,14 @@ void queue_a_add(QueueA* queue, iList* covered_vertices, iList* used_vertices) {
     QueueAElem* new_elem = malloc(sizeof(QueueAElem));
     new_elem->covered_vertices = deep_copy(covered_vertices);
     new_elem->used_vertices = deep_copy(used_vertices);
-
+    printf("%d\n", queue->cur_size);
     if (queue->cur_size + 1 >= queue->max_size) {
         queue->elems = realloc(queue->elems, 2 * queue->max_size * sizeof(QueueAElem));
         queue->max_size *= 2;
     }
 
     queue->elems[queue->tail] = *new_elem;
-    free(new_elem);
+    //free(new_elem);
 
     queue->tail = (queue->tail + 1) % queue->max_size;
     queue->cur_size++;

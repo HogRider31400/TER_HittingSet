@@ -63,7 +63,7 @@ int get(iList* list, int index) {
 int tail(iList* list) {
     if (list->head == NULL) return -1;
     Node* current = list->head;
-    printf("%d\n", current->value);
+    //printf("%d\n", current->value);
     while (current->next != NULL) {
         current = current->next;
     }

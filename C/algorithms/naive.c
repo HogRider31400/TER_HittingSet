@@ -34,10 +34,15 @@ int covers(Graph* graph, iList* vertices) {
     return 0;
 }
 
-void enum_covers_recursive(Graph* graph, iList* cur_covered_vertices, iList* cur_used_vertices) {
+void enum_covers_recursive(Graph* graph, iList* cur_covered_vertices, iList* cur_used_vertices, iListList* all_covers) {
+    //printf("%d %d\n",graph->nb_vertices, cur_covered_vertices->size);
     if (covers(graph, cur_covered_vertices) == 1) {
-        print_list(cur_used_vertices);
-        printf(" est un coverage\n");
+        if (has_subset(all_covers, cur_used_vertices) == 0) {
+            append_list(all_covers, deep_copy(cur_used_vertices));
+        }
+        //printf("Affichage coverage\n");
+        //print_list(cur_used_vertices);
+        //printf("\nFin\n");
         return;
     }
     //On détermine à partir de quel indice on commence
@@ -59,7 +64,7 @@ void enum_covers_recursive(Graph* graph, iList* cur_covered_vertices, iList* cur
             merge_unique(new_vertices, graph->edges[cur->value-1]->vertices);
         }
         append(cur_used_vertices, graph->vertices[i]->id);
-        enum_covers_recursive(graph, new_vertices, cur_used_vertices);
+        enum_covers_recursive(graph, new_vertices, cur_used_vertices, all_covers);
         remove_value(cur_used_vertices,graph->vertices[i]->id);
     }
 }
@@ -80,14 +85,14 @@ void enum_covers_iterative(Graph* graph) {
         QueueElem* cur = queue_pop(queue);
 
         if (covers(graph, cur->covered_vertices) == 1) {
-            print_list(cur->used_vertices);
+            //print_list(cur->used_vertices);
             //On vérifie qu'on en casse pas la minimalité
             if (has_subset(all_covers, cur->used_vertices) == 0) {
                 append_list(all_covers, deep_copy(cur->used_vertices));
             }
-            printf(" est un coverage\n");
-            printf("On a \n");
-            print_list_list(all_covers);
+            //printf(" est un coverage\n");
+            //printf("On a \n");
+            //print_list_list(all_covers);
             continue;
         }
 
@@ -98,6 +103,7 @@ void enum_covers_iterative(Graph* graph) {
         int last_used = tail(cur->used_vertices);
 
         for (int i = 0; i < graph->nb_vertices; i++) {
+
             //On vérifie qu'on n'a pas encore vu le dernier sommet
             if (last_seen == 0) {
                 if (graph->vertices[i]->id == last_used) {
@@ -116,7 +122,9 @@ void enum_covers_iterative(Graph* graph) {
             queue_add(queue,new_vertices,new_used);
         }
     }
-
+    //printf("Affichage coverage");
+    print_list_list(all_covers);
+    //printf("Fin\n");
 }
 void enum_covers_iterative_a(Graph* graph) {
     //On init la queue
@@ -132,26 +140,23 @@ void enum_covers_iterative_a(Graph* graph) {
     //Tant qu'on a des états à explorer
     while (queue->cur_size != 0) {
         QueueAElem cur = queue_a_pop(queue);
-        printf("aled\n");
+        //printf("aled\n");
         if (covers(graph, cur.covered_vertices) == 1) {
             print_list(cur.used_vertices);
             //On vérifie qu'on en casse pas la minimalité
             if (has_subset(all_covers, cur.used_vertices) == 0) {
                 append_list(all_covers, deep_copy(cur.used_vertices));
             }
-            printf(" est un coverage\n");
-            printf("On a \n");
-            print_list_list(all_covers);
+            //printf(" est un coverage\n");
+            //printf("On a \n");
+            //print_list_list(all_covers);
             continue;
         }
-        printf("aaaaa\n");
         //On détermine à partir de quel indice on commence
         //Tant qu'on a pas vu le dernier sommet ajouté on ne fait rien
         //Si on a pas encore ajouté d'arête on ignore cette partie
         int last_seen = (cur.used_vertices->head != NULL ? 0 : 1);
-        printf("aaaaa\n");
         int last_used = tail(cur.used_vertices);
-        printf("aaaaa\n");
         for (int i = 0; i < graph->nb_vertices; i++) {
             //On vérifie qu'on n'a pas encore vu le dernier sommet
             if (last_seen == 0) {
@@ -169,8 +174,10 @@ void enum_covers_iterative_a(Graph* graph) {
             }
             append(new_used, graph->vertices[i]->id);
             queue_a_add(queue,new_vertices,new_used);
-            printf("aaaaa\n");
+            //printf("aaaaa\n");
         }
     }
-
+    //printf("Affichage coverage");
+    print_list_list(all_covers);
+    //printf("Fin\n");
 }

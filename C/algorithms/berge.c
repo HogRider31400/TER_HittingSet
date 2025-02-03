@@ -113,7 +113,7 @@ void berge_algorithm(Graph* graph) {
                 if (found == 0) break;
             }
 
-
+            //Si c'est pas une couverture on fait rien
             if (specialized_covers(graph, cur_cover,i+1) == 0) continue;
             if (has_subset(filtered_covers,cur_cover) == 0) {
                 append_list(filtered_covers,cur_cover);
