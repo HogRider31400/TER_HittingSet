@@ -8,7 +8,7 @@
 #include "List.h"
 
 typedef struct QueueElem {
-    iList* covered_vertices;
+    iList* covered_edges;
     iList* used_vertices;
     struct QueueElem* next;
 } QueueElem;

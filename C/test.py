@@ -87,11 +87,9 @@ def exec_test(algorithm, test_path):
         "time" : time
     }
 
-    #print(algorithm, covers)
+     #print(algorithm, covers)
 
     return result
-
-test_files = ["SDFP23.txt"]
 
 
 ml = max([len(s) for s in algorithms])

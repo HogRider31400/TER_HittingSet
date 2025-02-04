@@ -17,7 +17,7 @@ Queue* queue_create() {
 
 void queue_add(Queue* queue, iList* covered_vertices, iList* used_vertices) {
     QueueElem* new_elem = malloc(sizeof(QueueElem));
-    new_elem->covered_vertices = covered_vertices;
+    new_elem->covered_edges = covered_vertices;
     new_elem->used_vertices = used_vertices;
     new_elem->next = NULL;
     if (queue->tail == NULL) {

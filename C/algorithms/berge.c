@@ -22,12 +22,12 @@ iListList* V_operator(iListList* l1, iListList* l2) {
         }
     }
 
-    for (NodeList* current_l2 = l2->head; current_l2 != NULL; current_l2 = current_l2->next) {
-        append_list(result, deep_copy(current_l2->value));
-    }
-    for (NodeList* current_l1 = l1->head; current_l1 != NULL; current_l1 = current_l1->next) {
-        append_list(result, deep_copy(current_l1->value));
-    }
+    //for (NodeList* current_l2 = l2->head; current_l2 != NULL; current_l2 = current_l2->next) {
+    //    append_list(result, deep_copy(current_l2->value));
+    //}
+    //for (NodeList* current_l1 = l1->head; current_l1 != NULL; current_l1 = current_l1->next) {
+    //    append_list(result, deep_copy(current_l1->value));
+    //}
 
     return result;
 }
@@ -46,10 +46,10 @@ iListList* create_edge_list_list(Graph* graph, int id_edge) {
 int specialized_covers(Graph* graph, iList* vertices,int id_edge) {
 
     //On nous a donné une couverture et on doit reconstruire les vertices qu'elle couvre
-    iList* covered_vertices = create_list();
+
+    iList* covered_edges = create_list();
 
     for (Node* current = vertices->head; current != NULL; current = current->next) {
-        //Pour la continuité du tableau on doit chercher la vertex au bon id, pas forcément au bon emplacement dans le tableau
         Vertex* cur_vertex = NULL;
         for (int i = 0; i < graph->nb_vertices; i++) {
             if (graph->vertices[i]->id == current->value) {
@@ -60,30 +60,12 @@ int specialized_covers(Graph* graph, iList* vertices,int id_edge) {
         if (cur_vertex == NULL) return 0;
 
         for (Node* current_edge = cur_vertex->edges->head; current_edge != NULL; current_edge = current_edge->next) {
-            for (Node* cur = graph->edges[current_edge->value-1]->vertices->head; cur != NULL; cur = cur->next) {
-                append_unique(covered_vertices, cur->value);
-            }
-        }
-    }
-    //printf("On : "); print_list(vertices); printf("qui couvre : ");print_list(covered_vertices);printf("\n");
-    //Une fois fait on fait comme dans covers.
-    for (int i = 0; i < graph->nb_vertices; i++) {
-        //On fait attention à ce que le vertex actuel ait bien un edge d'id <= id_edge
-        int is_fine = 0;
-        for (Node* cur = graph->vertices[i]->edges->head; cur != NULL; cur = cur->next) {
-            if (cur->value <= id_edge) {
-                is_fine = 1;
-            }
-        }
-        if (is_fine == 0) continue;
-
-
-        if (contains(covered_vertices, graph->vertices[i]->id) == 0) {
-            return 0;
+            append_unique(covered_edges, current_edge->value);
         }
     }
 
-    return 1;
+    if (covered_edges->size == id_edge) return 1;
+    return 0;
 }
 
 void berge_algorithm(Graph* graph) {
@@ -109,7 +91,8 @@ void berge_algorithm(Graph* graph) {
             iList* cur_cover = deep_copy(current->value);
 
             //Si c'est pas une couverture on fait rien
-            if (specialized_covers(graph, cur_cover,i+1) == 0) continue;
+            //print_list_list(filtered_covers); print_list(cur_cover); printf(" : %d %d\n",has_subset(filtered_covers,cur_cover), specialized_covers(graph, cur_cover,i+1));
+            //printf("cur\n");
             if (has_subset(filtered_covers,cur_cover) == 0) {
                 append_list(filtered_covers,cur_cover);
             }

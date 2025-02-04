@@ -27,17 +27,29 @@ int has_subset(iListList* list, iList* slist) {
     return 0;
 }
 
-int covers(Graph* graph, iList* vertices) {
+int covers(Graph* graph, iList* edges) {
 
-    if (graph->nb_vertices == vertices->size) return 1;
+    if (graph->nb_edges == edges->size) return 1;
 
     return 0;
 }
 
-void enum_covers_recursive(Graph* graph, iList* cur_covered_vertices, iList* cur_used_vertices, iListList* all_covers) {
+void enum_covers_recursive(Graph* graph, iList* cur_covered_edges, iList* cur_used_vertices, iListList* all_covers) {
     //printf("%d %d\n",graph->nb_vertices, cur_covered_vertices->size);
-    if (covers(graph, cur_covered_vertices) == 1) {
-        if (has_subset(all_covers, cur_used_vertices) == 0) {
+    if (covers(graph, cur_covered_edges) == 1) {
+
+        //Check de minimalité
+        int min = 1;
+        for (Node* cur = cur_used_vertices->head; cur != NULL; cur = cur->next) {
+            iList* test = deep_copy(cur_used_vertices);
+            remove_value(test, cur->value);
+            if (covers(graph, test)) {
+                min = 0;
+                break;
+            }
+        }
+
+        if (!has_subset(all_covers, cur_used_vertices) && min==1) {
             append_list(all_covers, deep_copy(cur_used_vertices));
         }
         //printf("Affichage coverage\n");
@@ -59,12 +71,13 @@ void enum_covers_recursive(Graph* graph, iList* cur_covered_vertices, iList* cur
             continue;
         }
         if (contains(cur_used_vertices, graph->vertices[i]->id) == 1) continue;
-        iList* new_vertices = deep_copy(cur_covered_vertices);
+        iList* new_edges = deep_copy(cur_covered_edges);
         for (Node* cur = graph->vertices[i]->edges->head; cur != NULL; cur = cur->next) {
-            merge_unique(new_vertices, graph->edges[cur->value-1]->vertices);
+            //merge_unique(new_vertices, graph->edges[cur->value-1]->vertices);
+            append_unique(new_edges, cur->value);
         }
         append(cur_used_vertices, graph->vertices[i]->id);
-        enum_covers_recursive(graph, new_vertices, cur_used_vertices, all_covers);
+        enum_covers_recursive(graph, new_edges, cur_used_vertices, all_covers);
         remove_value(cur_used_vertices,graph->vertices[i]->id);
     }
 }
@@ -76,15 +89,15 @@ void enum_covers_iterative(Graph* graph) {
 
     Queue* queue = queue_create();
     //On init l'élément initial
-    iList* base_covered_vertices = create_list();
+    iList* base_covered_edges = create_list();
     iList* base_used_vertices = create_list();
-    queue_add(queue,base_covered_vertices,base_used_vertices);
+    queue_add(queue,base_covered_edges,base_used_vertices);
 
     //Tant qu'on a des états à explorer
     while (queue->head != NULL) {
         QueueElem* cur = queue_pop(queue);
 
-        if (covers(graph, cur->covered_vertices) == 1) {
+        if (covers(graph, cur->covered_edges) == 1) {
             //print_list(cur->used_vertices);
             //On vérifie qu'on en casse pas la minimalité
             if (has_subset(all_covers, cur->used_vertices) == 0) {
@@ -112,14 +125,15 @@ void enum_covers_iterative(Graph* graph) {
                 continue;
             }
             if (contains(cur->used_vertices, graph->vertices[i]->id) == 1) continue;
-            iList* new_vertices = deep_copy(cur->covered_vertices);
+            iList* new_edges = deep_copy(cur->covered_edges);
             iList* new_used = deep_copy(cur->used_vertices);
 
             for (Node* cur = graph->vertices[i]->edges->head; cur != NULL; cur = cur->next) {
-                merge_unique(new_vertices, graph->edges[cur->value-1]->vertices);
+                //merge_unique(new_vertices, graph->edges[cur->value-1]->vertices);
+                append_unique(new_edges, cur->value);
             }
             append(new_used, graph->vertices[i]->id);
-            queue_add(queue,new_vertices,new_used);
+            queue_add(queue,new_edges,new_used);
         }
     }
     //printf("Affichage coverage");
