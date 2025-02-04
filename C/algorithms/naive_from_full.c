@@ -1,7 +1,5 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include "List.h"
-#include "HGraph.h"
 
 // Vérifie si l'ensemble donné couvre toutes les arêtes du graphe
 int covers(Graph* graph, iList* vertices) {
