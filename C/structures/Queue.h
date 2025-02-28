@@ -10,6 +10,7 @@
 typedef struct QueueElem {
     iList* covered_edges;
     iList* used_vertices;
+    long long int used_mask;
     struct QueueElem* next;
 } QueueElem;
 
@@ -33,7 +34,7 @@ typedef struct QueueA {
 } QueueA;
 
 Queue* queue_create();
-void queue_add(Queue* queue, iList* l1, iList* l2);
+void queue_add(Queue* queue, iList* l1, iList* l2, int mask);
 QueueElem* queue_pop(Queue* queue);
 
 QueueA* queue_a_create ();

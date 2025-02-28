@@ -5,6 +5,8 @@
 #include <stdio.h>
 #include "naive.h"
 
+#include <math.h>
+
 //Ici on regarde si l1 contient l2, donc si l2 C l1
 int is_subset(iList* l1, iList* l2) {
     Node* current = l2->head;
@@ -107,7 +109,7 @@ void enum_covers_iterative(Graph* graph) {
     //On init l'élément initial
     iList* base_covered_edges = create_list();
     iList* base_used_vertices = create_list();
-    queue_add(queue,base_covered_edges,base_used_vertices);
+    queue_add(queue,base_covered_edges,base_used_vertices,0);
 
     //Tant qu'on a des états à explorer
     while (queue->head != NULL) {
@@ -149,13 +151,141 @@ void enum_covers_iterative(Graph* graph) {
                 append_unique(new_edges, cur->value);
             }
             append(new_used, graph->vertices[i]->id);
-            queue_add(queue,new_edges,new_used);
+            queue_add(queue,new_edges,new_used,0);
         }
     }
     //printf("Affichage coverage");
     print_list_list(all_covers);
     //printf("Fin\n");
 }
+
+
+void enum_covers_iterative_array(Graph* graph) {
+    //On init la queue
+    //List contenant toutes les couvertures minimales
+    iListList* all_covers = create_list_list();
+
+    Queue* queue = queue_create();
+    //On init l'élément initial
+    iList* base_covered_edges = create_list();
+    iList* base_used_vertices = create_list();
+    queue_add(queue,base_covered_edges,base_used_vertices,0);
+
+    //Tant qu'on a des états à explorer
+    while (queue->head != NULL) {
+        QueueElem* cur = queue_pop(queue);
+        //print_list(cur->covered_edges);
+        //printf("\n%d %f %d \n", cur->used_mask, pow(2, graph->nb_edges)-1, graph->nb_edges);
+        if (cur->used_mask == pow(2, graph->nb_edges)-1) {//covers(graph, cur->covered_edges) == 1) {
+            //print_list(cur->used_vertices);
+            //On vérifie qu'on en casse pas la minimalité
+            if (has_subset(all_covers, cur->used_vertices) == 0) {
+                append_list(all_covers, deep_copy(cur->used_vertices));
+            }
+            //printf(" est un coverage\n");
+            //printf("On a \n");
+            //print_list_list(all_covers);
+            continue;
+        }
+
+        //On détermine à partir de quel indice on commence
+        //Tant qu'on a pas vu le dernier sommet ajouté on ne fait rien
+        //Si on a pas encore ajouté d'arête on ignore cette partie
+        int last_seen = (cur->used_vertices->head != NULL ? 0 : 1);
+        int last_used = tail(cur->used_vertices);
+
+        for (int i = 0; i < graph->nb_vertices; i++) {
+
+            //On vérifie qu'on n'a pas encore vu le dernier sommet
+            if (last_seen == 0) {
+                if (graph->vertices[i]->id == last_used) {
+                    last_seen = 1;
+                }
+                continue;
+            }
+            if (contains(cur->used_vertices, graph->vertices[i]->id) == 1) continue;
+            iList* new_edges = NULL;
+            iList* new_used = deep_copy(cur->used_vertices);
+            long long int new_mask = cur->used_mask;
+
+            for (Node* cur = graph->vertices[i]->edges->head; cur != NULL; cur = cur->next) {
+                //merge_unique(new_vertices, graph->edges[cur->value-1]->vertices);
+                //append_unique(new_edges, cur->value);
+                new_mask = new_mask | (1 << (cur->value-1));
+            }
+            append(new_used, graph->vertices[i]->id);
+            queue_add(queue,new_edges,new_used, new_mask);
+        }
+    }
+    //printf("Affichage coverage");
+    print_list_list(all_covers);
+    //printf("Fin\n");
+}
+
+//Version où le graph est une array aussi
+void enum_covers_iterative_array_2(Graph* graph) {
+    //On init la queue
+    //List contenant toutes les couvertures minimales
+    iListList* all_covers = create_list_list();
+
+    Queue* queue = queue_create();
+    //On init l'élément initial
+    iList* base_covered_edges = create_list();
+    iList* base_used_vertices = create_list();
+    queue_add(queue,base_covered_edges,base_used_vertices,0);
+
+    //Tant qu'on a des états à explorer
+    while (queue->head != NULL) {
+        QueueElem* cur = queue_pop(queue);
+        //print_list(cur->covered_edges);
+        //printf("\n%d %f %d \n", cur->used_mask, pow(2, graph->nb_edges)-1, graph->nb_edges);
+        if (cur->used_mask == pow(2, graph->nb_edges)-1) {//covers(graph, cur->covered_edges) == 1) {
+            //print_list(cur->used_vertices);
+            //On vérifie qu'on en casse pas la minimalité
+            if (has_subset(all_covers, cur->used_vertices) == 0) {
+                append_list(all_covers, deep_copy(cur->used_vertices));
+            }
+            //printf(" est un coverage\n");
+            //printf("On a \n");
+            //print_list_list(all_covers);
+            continue;
+        }
+
+        //On détermine à partir de quel indice on commence
+        //Tant qu'on a pas vu le dernier sommet ajouté on ne fait rien
+        //Si on a pas encore ajouté d'arête on ignore cette partie
+        int last_seen = (cur->used_vertices->head != NULL ? 0 : 1);
+        int last_used = tail(cur->used_vertices);
+
+        for (int i = 0; i < graph->nb_vertices; i++) {
+
+            //On vérifie qu'on n'a pas encore vu le dernier sommet
+            if (last_seen == 0) {
+                if (graph->vertices[i]->id == last_used) {
+                    last_seen = 1;
+                }
+                continue;
+            }
+            if (contains(cur->used_vertices, graph->vertices[i]->id) == 1) continue;
+            iList* new_edges = NULL;
+            iList* new_used = deep_copy(cur->used_vertices);
+            long long int new_mask = cur->used_mask;
+
+            for (Node* cur = graph->vertices[i]->edges->head; cur != NULL; cur = cur->next) {
+                //merge_unique(new_vertices, graph->edges[cur->value-1]->vertices);
+                //append_unique(new_edges, cur->value);
+                new_mask = new_mask | (1 << (cur->value-1));
+            }
+            append(new_used, graph->vertices[i]->id);
+            queue_add(queue,new_edges,new_used, new_mask);
+        }
+    }
+    //printf("Affichage coverage");
+    print_list_list(all_covers);
+    //printf("Fin\n");
+}
+
+
 void enum_covers_iterative_a(Graph* graph) {
     //On init la queue
     //List contenant toutes les couvertures minimales

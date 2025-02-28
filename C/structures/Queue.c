@@ -15,11 +15,12 @@ Queue* queue_create() {
     return queue;
 }
 
-void queue_add(Queue* queue, iList* covered_vertices, iList* used_vertices) {
+void queue_add(Queue* queue, iList* covered_vertices, iList* used_vertices, int mask) {
     QueueElem* new_elem = malloc(sizeof(QueueElem));
     new_elem->covered_edges = covered_vertices;
     new_elem->used_vertices = used_vertices;
     new_elem->next = NULL;
+    new_elem->used_mask = mask;
     if (queue->tail == NULL) {
         queue->head = new_elem;
         queue->tail = new_elem;

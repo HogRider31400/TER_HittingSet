@@ -1,14 +1,18 @@
 import subprocess
 import os
 
+
+
 algorithms = [
-    "naive_recursive",
-    "naive_iterative",
-    "berge"
+    #"naive_recursive",
+    #"naive_iterative",
+    #"naive_iterative_array",
+    #"berge",
+    "#python_it"
 ]
 
-executable = "./cmake-build-debug/C.exe"
-
+executable_c = ["./cmake-build-debug-1/C.exe"]
+executable_python = ["python" ,"./from_empty.py"]
 test_files = [f for f in os.listdir("./data") if f.endswith('.txt')]
 check_files = [f for f in os.listdir("./data/tests/inputs") if f.endswith('.txt')]
 
@@ -51,17 +55,15 @@ def do_covers(hypergraph, cover):
     return False
 
 
-def exec_test(algorithm, test_path):
-
+def get_covers_and_time(executable, algorithm, test_path, output=False):
     hypergraph = parse_hypergraph(test_path)
     #print(hypergraph)
     try:
-        test_output = subprocess.run([executable, algorithm, test_path], stdout=subprocess.PIPE, timeout=60).stdout.decode('utf-8')
+        test_output = subprocess.run([*executable, algorithm, test_path], stdout=subprocess.PIPE, timeout=60).stdout.decode('utf-8')
     except subprocess.TimeoutExpired:
-        #print("Temps expiré")
-        return {"time": -1}
+        return {"time": -1}, -1, None
     test_output = test_output.split("\n")
-
+    #print(test_output)
     covers = []
     time = -1
 
@@ -73,7 +75,11 @@ def exec_test(algorithm, test_path):
             time = float(line)
         else:
             covers.append(list(map(int, line.split())))
-    
+    return covers, time, hypergraph
+
+def exec_test(algorithm, test_path, executable = executable_c):
+    covers,time, hypergraph = get_covers_and_time(executable, algorithm, test_path)
+    if time == -1: return covers
     nb_covered = 0
 
     for cover in covers:
@@ -91,29 +97,11 @@ def exec_test(algorithm, test_path):
 
     return result
 
-def exec_check(algorithm, check_file):
+def exec_check(algorithm, check_file, executable = executable_c):
     check_inp = "./data/tests/inputs/" + check_file
     check_out = "./data/tests/outputs/" + check_file
-    hypergraph = parse_hypergraph(check_inp)
 
-    try:
-        test_output = subprocess.run([executable, algorithm, check_inp], stdout=subprocess.PIPE, timeout=60).stdout.decode('utf-8')
-    except subprocess.TimeoutExpired:
-        #print("Temps expiré")
-        return {"time": -1}
-    test_output = test_output.split("\n")
-
-    covers = []
-    time = -1
-
-    expect_time = False
-    for line in test_output:
-        if line.startswith("Time"):
-            expect_time = True
-        elif expect_time:
-            time = float(line)
-        else:
-            covers.append(list(map(int, line.split())))
+    covers,time,_ = get_covers_and_time(executable, algorithm, check_inp)
 
     excepted_output = []
 
@@ -135,8 +123,14 @@ print()
 #La correction
 for algorithm in algorithms:
 
+    
+    if algorithm[0] == "#":
+        executable = executable_python 
+    else:
+        executable = executable_c
+
     for check_file in check_files:
-        result = exec_check(algorithm, check_file)
+        result = exec_check(algorithm, check_file, executable)
         if result["is_correct"]:
             print(f"{algorithm}: {check_file} - Correct")
         else:
@@ -160,10 +154,15 @@ print(header)
 results = {}
 for algorithm in algorithms:
 
+    if algorithm[0] == "#":
+        executable = executable_python 
+    else:
+        executable = executable_c
+
     cur_results = {}
 
     for test_file in test_files:
-        cur_results[test_file] = exec_test(algorithm,"./data/" + test_file)
+        cur_results[test_file] = exec_test(algorithm,"./data/" + test_file,executable)
 
     results[algorithm] = cur_results
 

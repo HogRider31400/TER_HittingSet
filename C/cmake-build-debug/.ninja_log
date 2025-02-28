@@ -1,18 +1,10 @@
 # ninja log v6
-75	262	7603814517853711	CMakeFiles/C.dir/HGraph.c.obj	d38eb1a3cae29c8d
-2	283	7603939140848357	build.ninja	d5743ced5ba29928
-10	170	7603832388143535	CMakeFiles/C.dir/algorithms/berge.c.obj	b0e2fdd2a110c63e
-133	1521	7603817973047869	CMakeFiles/C.dir/main.c.obj	eaae5e64e889d5c
-88	294	7603814517987032	CMakeFiles/C.dir/graph_reader.c.obj	57fd439992bdddc2
-67	283	7603814517779713	CMakeFiles/C.dir/structures/List.c.obj	7bf74beead27ece2
-171	379	7603832389740258	C.exe	c74948ee46aa14d6
-152	346	7603817973243751	CMakeFiles/C.dir/structures/Queue.c.obj	238620d3bb7321f
-71	249	7603821958701277	CMakeFiles/C.dir/algorithms/naive.c.obj	a1781bb746a19564
 22	152	7603939204854792	CMakeFiles/C.dir/HGraph.c.obj	ab5d54423dab384b
-14	156	7603939204779460	CMakeFiles/C.dir/structures/List.c.obj	4d3369906c554217
-30	196	7603939204939902	CMakeFiles/C.dir/algorithms/naive.c.obj	7015fe5246cf45bc
-48	200	7603939205125614	CMakeFiles/C.dir/structures/Queue.c.obj	ecb4869b59c82f88
+2	283	7624490888828062	build.ninja	d5743ced5ba29928
 58	208	7603939205210306	CMakeFiles/C.dir/algorithms/berge.c.obj	a0ec425bb6bdcbba
-39	221	7603939205029132	CMakeFiles/C.dir/graph_reader.c.obj	783055641a3b940d
 5	949	7603939204684097	CMakeFiles/C.dir/main.c.obj	46b0906270350399
+39	221	7603939205029132	CMakeFiles/C.dir/graph_reader.c.obj	783055641a3b940d
+14	156	7603939204779460	CMakeFiles/C.dir/structures/List.c.obj	4d3369906c554217
 951	1128	7603939214149577	C.exe	ccb9c86331a54b17
+48	200	7603939205125614	CMakeFiles/C.dir/structures/Queue.c.obj	ecb4869b59c82f88
+30	196	7603939204939902	CMakeFiles/C.dir/algorithms/naive.c.obj	7015fe5246cf45bc

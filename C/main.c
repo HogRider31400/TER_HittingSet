@@ -44,6 +44,7 @@ int main(int argc, char *argv[]) {
         if (strcmp(cur,"naive_recursive") == 0) time_spent = chrono_func(launch_naive_empty, graph);
         if (strcmp(cur,"naive_iterative") == 0) time_spent = chrono_func(enum_covers_iterative, graph);
         if (strcmp(cur,"berge") == 0) time_spent = chrono_func(berge_algorithm, graph);
+        if (strcmp(cur, "naive_iterative_array") == 0) time_spent = chrono_func(enum_covers_iterative_array, graph);
         //printf("%s\n", cur);
     }
 
