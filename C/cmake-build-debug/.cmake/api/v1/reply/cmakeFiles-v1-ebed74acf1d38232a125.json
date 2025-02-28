@@ -16,7 +16,7 @@
 		},
 		{
 			"isGenerated" : true,
-			"path" : "cmake-build-release/CMakeFiles/3.30.5/CMakeSystem.cmake"
+			"path" : "cmake-build-debug/CMakeFiles/3.30.5/CMakeSystem.cmake"
 		},
 		{
 			"isCMake" : true,
@@ -290,7 +290,7 @@
 		},
 		{
 			"isGenerated" : true,
-			"path" : "cmake-build-release/CMakeFiles/3.30.5/CMakeCCompiler.cmake"
+			"path" : "cmake-build-debug/CMakeFiles/3.30.5/CMakeCCompiler.cmake"
 		},
 		{
 			"isCMake" : true,
@@ -364,7 +364,7 @@
 		},
 		{
 			"isGenerated" : true,
-			"path" : "cmake-build-release/CMakeFiles/3.30.5/CMakeRCCompiler.cmake"
+			"path" : "cmake-build-debug/CMakeFiles/3.30.5/CMakeRCCompiler.cmake"
 		},
 		{
 			"isCMake" : true,
@@ -448,7 +448,7 @@
 		},
 		{
 			"isGenerated" : true,
-			"path" : "cmake-build-release/CMakeFiles/3.30.5/CMakeCCompiler.cmake"
+			"path" : "cmake-build-debug/CMakeFiles/3.30.5/CMakeCCompiler.cmake"
 		},
 		{
 			"isCMake" : true,
@@ -459,7 +459,7 @@
 	"kind" : "cmakeFiles",
 	"paths" : 
 	{
-		"build" : "C:/Users/Alex/Desktop/TER_HittingSet/C/cmake-build-release",
+		"build" : "C:/Users/Alex/Desktop/TER_HittingSet/C/cmake-build-debug",
 		"source" : "C:/Users/Alex/Desktop/TER_HittingSet/C"
 	},
 	"version" : 

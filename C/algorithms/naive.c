@@ -41,9 +41,25 @@ void enum_covers_recursive(Graph* graph, iList* cur_covered_edges, iList* cur_us
         //Check de minimalité
         int min = 1;
         for (Node* cur = cur_used_vertices->head; cur != NULL; cur = cur->next) {
-            iList* test = deep_copy(cur_used_vertices);
-            remove_value(test, cur->value);
-            if (covers(graph, test)) {
+
+            iList* new_covered =  create_list();
+
+            for (Node* current = cur_used_vertices->head; current != NULL; current = current->next) {
+                if (current->value == cur->value) continue;
+                Vertex* cur_vertex = NULL;
+                for (int i = 0; i < graph->nb_vertices; i++) {
+                    if (graph->vertices[i]->id == current->value) {
+                        cur_vertex = graph->vertices[i];
+                        break;
+                    }
+                }
+
+                for (Node* current_edge = cur_vertex->edges->head; current_edge != NULL; current_edge = current_edge->next) {
+                    append_unique(new_covered, current_edge->value);
+                }
+            }
+
+            if (covers(graph, new_covered)) {
                 min = 0;
                 break;
             }
