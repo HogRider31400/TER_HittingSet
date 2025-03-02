@@ -36,6 +36,8 @@ iList* deep_copy(iList* list);
 void merge_unique(iList* l1, iList* l2);
 void append_unique(iList* list, int elem_value);
 int tail(iList* list);
+void free_list(iList* list);
+
 
 iListList* create_list_list();
 void append_list(iListList* list, iList* elem_list);

@@ -45,15 +45,15 @@ void launch_naive_empty(Graph* graph) {
 
 int main(int argc, char *argv[]) {
     char test_case[] = "./data/example.txt";
+    fflush(stdout);
     if (argc == 3) {
         char* cur = argv[2];
         strcpy(test_case, cur);
     }
 
-
     Graph* graph = read_graph_from_file(test_case);
-    a_Graph* agraph = read_agraph_from_file(test_case);
-
+    a_Graph* agraph = convert_graph_to_agraph(graph);
+    //printf("%s \n", test_case);
     double time_spent = 0;
     if (argc >= 2) {
         char* cur = argv[1];
@@ -64,6 +64,7 @@ int main(int argc, char *argv[]) {
         if (strcmp(cur, "naive_iterative_array_2") == 0) time_spent = chrono_func_2(enum_covers_iterative_array_2, agraph);
         //printf("%s\n", cur);
     }
+
 
     /*
     printf("edges et vertices : %d %d\n",graph->nb_edges,graph->nb_vertices);

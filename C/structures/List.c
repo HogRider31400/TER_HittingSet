@@ -103,6 +103,20 @@ iList* deep_copy(iList* list) {
     return new_list;
 }
 
+void free_list(iList* list) {
+    Node* current = list->head;
+    Node* next;
+
+    while (current != NULL) {
+        next = current->next;
+        free(current);
+        current = next;
+    }
+
+    list->head = NULL;
+    list->size = 0;
+}
+
 //merge 2 listes sans doublon et met le résultat dans la première
 void merge_unique(iList* l1, iList* l2) {
     for (Node* cur = l2->head; cur != NULL; cur = cur->next) {

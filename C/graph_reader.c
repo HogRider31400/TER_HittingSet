@@ -88,9 +88,6 @@ iList* parse_line(char *line, int size) {
         }
     }
     if (cur_nb != 0) append(list,cur_nb);
-    //printf("Liste parsée en ints : \n");
-    //print_list(list);
-    //printf("\n");
     return list;
 }
 
@@ -108,125 +105,48 @@ iList* parse_line(char *line, int size) {
  *
  *  Qui est un hypergraphe à 3 hyper arêtes et 4 sommets
  */
-
 Graph* read_graph_from_file(char *filename) {
-    //printf("ici\n");
     FILE *file = fopen(filename, "r");
     if (file == NULL) {
-        printf("Erreur: Impossible d'ouvrir %s\n", filename);
         return NULL;
     }
-    //printf("ici\n");
+
     char * line = NULL;
     size_t len = 0;
     ssize_t read;
 
     Graph* graph = create_graph();
-    //printf("ici\n");
-    while ((read = getline(&line, &len, file)) != -1) {
-        //On parse et on ajoute l'hyper arête au graphe
-        iList* line_list = parse_line(line,read);
 
+    while ((read = getline(&line, &len, file)) != -1) {
+        iList* line_list = parse_line(line, read);
         Edge* edge = create_edge();
         edge->id = graph->nb_edges+1;
         edge->vertices = line_list;
-        add_edge(graph,edge);
+        add_edge(graph, edge);
     }
 
     fclose(file);
     if (line)
         free(line);
 
-    //on init un tableau de correspondance pour que tout tienne sur un tableau
-    //car sinon il y a des trous, beaucoup
-    int corresp[MAX_VERTICES];
-    memset(corresp, -1, sizeof(corresp));
-
-    //On a toutes les hyper arêtes il faut reconstruire les sommets à partir de ça
     for (int i = 0; i < graph->nb_edges; i++) {
         Edge* edge = graph->edges[i];
 
         for (Node* cur = edge->vertices->head; cur != NULL; cur = cur->next) {
-            if (corresp[cur->value-1] == -1) {
-                corresp[cur->value-1] = graph->nb_vertices;
-            }
-            int id = corresp[cur->value-1];
-            //printf("%d %d \n",cur->value-1,id);
-            //On vérifie si le sommet a déjà été init, si non on le fait
+            // Protection contre les valeurs négatives ou nulles
+            if (cur->value <= 0) continue;
+
+            // Protection contre les valeurs trop grandes
+            if (cur->value > MAX_VERTICES) continue;
+
+            int id = cur->value - 1;
+
             if (graph->vertices[id] == NULL) {
                 graph->vertices[id] = create_vertex();
                 graph->vertices[id]->id = cur->value;
                 graph->nb_vertices++;
             }
             append(graph->vertices[id]->edges, edge->id);
-        }
-
-    }
-    //printf("La sommet 3 a :");
-    //print_list(graph->vertices[2]->edges);
-    //printf("\n");
-
-    return graph;
-
-}
-a_Graph* read_agraph_from_file(char *filename) {
-    FILE *file = fopen(filename, "r");
-    if (file == NULL) {
-        printf("Erreur: Impossible d'ouvrir %s\n", filename);
-        return NULL;
-    }
-
-    char * line = NULL;
-    size_t len = 0;
-    ssize_t read;
-
-    a_Graph* graph = create_agraph();
-
-    while ((read = getline(&line, &len, file)) != -1) {
-        iList* line_list = parse_line(line, read);
-
-        a_Edge* edge = create_aedge();
-        edge->id = graph->nb_edges+1;
-
-        int idx = 0;
-        for (Node* cur = line_list->head; cur != NULL; cur = cur->next) {
-            edge->vertices[idx] = cur->value;
-            idx++;
-        }
-        edge->nb_vertices = idx;
-
-        add_aedge(graph, edge);
-    }
-
-    fclose(file);
-    if (line)
-        free(line);
-
-    //on init un tableau de correspondance pour que tout tienne sur un tableau
-    //car sinon il y a des trous, beaucoup
-    int corresp[MAX_VERTICES];
-    memset(corresp, -1, sizeof(corresp));
-
-
-
-    for (int i = 0; i < graph->nb_edges; i++) {
-        a_Edge* edge = graph->edges[i];
-
-        for (int j = 0; j < edge->nb_vertices; j++) {
-            int value = edge->vertices[j];
-            if (corresp[value-1] == -1) {
-                corresp[value-1] = graph->nb_vertices;
-            }
-            int id = corresp[value-1];
-
-            if (id >= graph->nb_vertices || graph->vertices[id] == NULL) {
-                a_Vertex* vertex = create_avertex();
-                vertex->id = value;  // Conserve l'ID original qui commence à 1
-                add_avertex(graph, vertex);
-            }
-            //printf("%d %d %d \n", value, id, i);
-
-            add_edge_to_vertex(graph, id, i);
         }
     }
 

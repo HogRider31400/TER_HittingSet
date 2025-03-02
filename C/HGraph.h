@@ -12,7 +12,7 @@
 
 typedef struct Vertex {
     int id;
-    int official_id;b
+    int official_id;
     iList* edges;
 } Vertex;
 
@@ -64,4 +64,6 @@ void add_aedge(a_Graph* graph, a_Edge* edge);
 void add_avertex(a_Graph* graph, a_Vertex* vertex);
 void add_edge_to_vertex(a_Graph* graph, int id_vertex, int id_edge);
 void add_vertex_to_edge(a_Graph* graph, int id_vertex, int id_edge);
+
+a_Graph* convert_graph_to_agraph(Graph* graph);
 #endif //HGRAPH_H

@@ -6,7 +6,6 @@
 #define GRAPH_READER_H
 #include "HGraph.h"
 
-a_Graph* read_agraph_from_file(char *filename);
 
 Graph* read_graph_from_file(char *filename);
 iList* parse_line(char *line, int size);

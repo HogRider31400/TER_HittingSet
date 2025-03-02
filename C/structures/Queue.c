@@ -15,12 +15,11 @@ Queue* queue_create() {
     return queue;
 }
 
-void queue_add(Queue* queue, iList* covered_vertices, iList* used_vertices, int mask) {
+void queue_add(Queue* queue, iList* covered_vertices, iList* used_vertices) {
     QueueElem* new_elem = malloc(sizeof(QueueElem));
     new_elem->covered_edges = covered_vertices;
     new_elem->used_vertices = used_vertices;
     new_elem->next = NULL;
-    new_elem->used_mask = mask;
     if (queue->tail == NULL) {
         queue->head = new_elem;
         queue->tail = new_elem;
@@ -42,6 +41,47 @@ QueueElem* queue_pop(Queue* queue) {
 
     return pop_elem;
 }
+
+QueueO* queue_o_create() {
+    QueueO* queue = malloc(sizeof(QueueO));
+    queue->size = 0;
+    queue->head = NULL;
+    queue->tail = NULL;
+    return queue;
+}
+
+void queue_o_add(QueueO* queue,short int* covered_edges, iList* l1, int nb_covered, int max_covered) {
+    QueueOElem* new_elem = malloc(sizeof(QueueOElem));
+    new_elem->max_covered = max_covered;
+    new_elem->nb_covered = nb_covered;
+    new_elem->covered_edges = covered_edges;
+    new_elem->used_vertices = l1;
+    new_elem->next = NULL;
+    if (queue->tail == NULL) {
+        queue->head = new_elem;
+        queue->tail = new_elem;
+    }
+    else {
+        queue->tail->next = new_elem;
+        queue->tail = new_elem;
+    }
+}
+QueueOElem* queue_o_pop(QueueO* queue) {
+    if (queue->head == NULL) {
+        return NULL;
+    }
+    QueueOElem* pop_elem = queue->head;
+    queue->head = pop_elem->next;
+    if (queue->head == NULL) {
+        queue->tail = NULL;
+    }
+
+    return pop_elem;
+}
+
+
+
+
 QueueA* queue_a_create() {
     QueueA* queue = malloc(sizeof(QueueA));
     queue->elems = malloc(DEFAULT_SIZE * sizeof(QueueAElem));

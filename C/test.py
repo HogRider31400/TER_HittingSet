@@ -1,15 +1,20 @@
 import subprocess
 import os
+import signal
+import psutil
+import threading
+import time
 
+oom_list = []
 
 
 algorithms = [
-    "naive_recursive",
-    "naive_iterative",
+    #"naive_recursive",
+    #"naive_iterative",
     "naive_iterative_array",
-    "berge",
-    "#python_it",
-    "naive_iterative_array_2"
+    #"berge",
+    #"#python_it",
+    #"naive_iterative_array_2"
 ]
 
 executable_c = ["./cmake-build-debug-1/C.exe"]
@@ -55,19 +60,45 @@ def do_covers(hypergraph, cover):
         return True
     return False
 
+def monitor_memory(process, limit_gb=4):
+    limit_bytes = limit_gb * 1024 * 1024 * 1024
+    p = psutil.Process(process.pid)
+    
+    while process.poll() is None:
+        try:
+            if p.memory_info().rss > limit_bytes:
+                oom_list.append(p.memory_info().rss)
+                process.send_signal(signal.SIGTERM)
+                break
+            time.sleep(0.1)  # Vérifier toutes les 100ms
+        except (psutil.NoSuchProcess, psutil.AccessDenied):
+            break
 
 def get_covers_and_time(executable, algorithm, test_path, output=False):
     hypergraph = parse_hypergraph(test_path)
     #print(hypergraph)
     try:
-        test_output = subprocess.run([*executable, algorithm, test_path], stdout=subprocess.PIPE, timeout=60).stdout.decode('utf-8')
+        process = subprocess.Popen([*executable, algorithm, os.path.abspath(test_path).replace("\\","/")],
+                             stdout=subprocess.PIPE, 
+                             stderr=subprocess.PIPE)
+
+        monitor_thread = threading.Thread(target=monitor_memory, args=(process, 4))
+        monitor_thread.daemon = True
+        monitor_thread.start()
+    
+        test_output = process.communicate(timeout=60)
     except subprocess.TimeoutExpired:
+        #print("alo")
+        process.kill()
         return {"time": -1}, -1, None
-    test_output = test_output.split("\n")
     #print(test_output)
+    if len(test_output[0]) == 0: return {"time": "OOM"}, -1, None
+    test_output = test_output[0].decode('utf-8').split("\n")
+    if len(test_output) == 1: return {"time": "OOM"}, -1, None
     covers = []
     time = -1
-
+    process.kill()
+    #print(executable, algorithm, test_path,test_output)
     expect_time = False
     for line in test_output:
         if line.startswith("Time"):
@@ -78,6 +109,7 @@ def get_covers_and_time(executable, algorithm, test_path, output=False):
             covers.append(list(map(int, line.split())))
     return covers, time, hypergraph
 
+#get_covers_and_time(executable_c, "naive_iterative", "C:/Users/Alex/Desktop/TER_HittingSet/C/data/tests/inputs/simple.txt")
 def exec_test(algorithm, test_path, executable = executable_c):
     covers,time, hypergraph = get_covers_and_time(executable, algorithm, test_path)
     if time == -1: return covers
@@ -171,13 +203,14 @@ for algorithm in algorithms:
 
     for cur_t in test_files:
         line += " | "
-        c_time = cur_results[cur_t]["time"]
+        #print(cur_results)
+        c_time = str(cur_results[cur_t]["time"])[:7]
 
         line += " " * (len(cur_t) - len(str(c_time)))
         line += str(c_time)
     print(line)
 
-print(results)
+print(oom_list)
 
 
 
