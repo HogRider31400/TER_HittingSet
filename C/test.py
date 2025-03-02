@@ -4,11 +4,12 @@ import os
 
 
 algorithms = [
-    #"naive_recursive",
-    #"naive_iterative",
-    #"naive_iterative_array",
-    #"berge",
-    "#python_it"
+    "naive_recursive",
+    "naive_iterative",
+    "naive_iterative_array",
+    "berge",
+    "#python_it",
+    "naive_iterative_array_2"
 ]
 
 executable_c = ["./cmake-build-debug-1/C.exe"]

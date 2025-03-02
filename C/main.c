@@ -18,6 +18,19 @@ double chrono_func( void func(Graph*), Graph* graph) {
     return (end.QuadPart - start.QuadPart) / (double)freq.QuadPart;
 }
 
+double chrono_func_2( void func(a_Graph*), a_Graph* graph) {
+    LARGE_INTEGER start, end, freq;
+    QueryPerformanceFrequency(&freq);
+    QueryPerformanceCounter(&start);
+
+    func(graph);
+
+    QueryPerformanceCounter(&end);
+    return (end.QuadPart - start.QuadPart) / (double)freq.QuadPart;
+}
+
+
+
 //Voici un exemple de définition d'une fonction pour appeler le chronométrage, on fait le travail préliminaire pour définir les paramètres supplémentaires puis on appelle la fonction
 void launch_naive_empty(Graph* graph) {
     iList* cur_c = create_list();
@@ -36,7 +49,10 @@ int main(int argc, char *argv[]) {
         char* cur = argv[2];
         strcpy(test_case, cur);
     }
+
+
     Graph* graph = read_graph_from_file(test_case);
+    a_Graph* agraph = read_agraph_from_file(test_case);
 
     double time_spent = 0;
     if (argc >= 2) {
@@ -45,6 +61,7 @@ int main(int argc, char *argv[]) {
         if (strcmp(cur,"naive_iterative") == 0) time_spent = chrono_func(enum_covers_iterative, graph);
         if (strcmp(cur,"berge") == 0) time_spent = chrono_func(berge_algorithm, graph);
         if (strcmp(cur, "naive_iterative_array") == 0) time_spent = chrono_func(enum_covers_iterative_array, graph);
+        if (strcmp(cur, "naive_iterative_array_2") == 0) time_spent = chrono_func_2(enum_covers_iterative_array_2, agraph);
         //printf("%s\n", cur);
     }
 

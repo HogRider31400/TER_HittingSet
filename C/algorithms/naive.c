@@ -175,7 +175,7 @@ void enum_covers_iterative_array(Graph* graph) {
     while (queue->head != NULL) {
         QueueElem* cur = queue_pop(queue);
         //print_list(cur->covered_edges);
-        //printf("\n%d %f %d \n", cur->used_mask, pow(2, graph->nb_edges)-1, graph->nb_edges);
+        printf("\n%d %f %d \n", cur->used_mask, pow(2, graph->nb_edges)-1, graph->nb_edges);
         if (cur->used_mask == pow(2, graph->nb_edges)-1) {//covers(graph, cur->covered_edges) == 1) {
             //print_list(cur->used_vertices);
             //On vérifie qu'on en casse pas la minimalité
@@ -223,7 +223,7 @@ void enum_covers_iterative_array(Graph* graph) {
 }
 
 //Version où le graph est une array aussi
-void enum_covers_iterative_array_2(Graph* graph) {
+void enum_covers_iterative_array_2(a_Graph* graph) {
     //On init la queue
     //List contenant toutes les couvertures minimales
     iListList* all_covers = create_list_list();
@@ -238,7 +238,7 @@ void enum_covers_iterative_array_2(Graph* graph) {
     while (queue->head != NULL) {
         QueueElem* cur = queue_pop(queue);
         //print_list(cur->covered_edges);
-        //printf("\n%d %f %d \n", cur->used_mask, pow(2, graph->nb_edges)-1, graph->nb_edges);
+        //printf("%d %f %d \n", cur->used_mask, pow(2, graph->nb_edges)-1, graph->nb_edges);
         if (cur->used_mask == pow(2, graph->nb_edges)-1) {//covers(graph, cur->covered_edges) == 1) {
             //print_list(cur->used_vertices);
             //On vérifie qu'on en casse pas la minimalité
@@ -271,11 +271,13 @@ void enum_covers_iterative_array_2(Graph* graph) {
             iList* new_used = deep_copy(cur->used_vertices);
             long long int new_mask = cur->used_mask;
 
-            for (Node* cur = graph->vertices[i]->edges->head; cur != NULL; cur = cur->next) {
+            for (int j = 0; j < graph->vertices[i]->nb_edges; j++) {
+                int id = graph->vertices[i]->edges[j];
                 //merge_unique(new_vertices, graph->edges[cur->value-1]->vertices);
                 //append_unique(new_edges, cur->value);
-                new_mask = new_mask | (1 << (cur->value-1));
+                new_mask = new_mask | (1 << id);
             }
+            //printf("%d \n", graph->vertices[i]->id);
             append(new_used, graph->vertices[i]->id);
             queue_add(queue,new_edges,new_used, new_mask);
         }

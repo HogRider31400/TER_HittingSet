@@ -52,3 +52,51 @@ void add_vertex(Graph* graph, Vertex* vertex) {
     graph->vertices[graph->nb_vertices] = vertex;
     graph->nb_vertices++;
 }
+
+
+
+//Graph avec arrays
+
+a_Vertex* create_avertex() {
+    a_Vertex* vertex = (a_Vertex*)malloc(sizeof(a_Vertex));
+    vertex->id = -1;
+    vertex->nb_edges = 0;
+    return vertex;
+}
+
+a_Edge* create_aedge() {
+    a_Edge* edge = (a_Edge*)malloc(sizeof(a_Edge));
+    edge->id = -1;
+    edge->nb_vertices = 0;
+    return edge;
+}
+
+// Fonction pour créer un nouveau graphe
+a_Graph* create_agraph() {
+    a_Graph* graph = (a_Graph*)malloc(sizeof(a_Graph));
+    graph->nb_edges = 0;
+    graph->nb_vertices = 0;
+    return graph;
+}
+
+void add_aedge(a_Graph* graph, a_Edge* edge) {
+    graph->edges[graph->nb_edges] = edge;
+    graph->nb_edges++;
+}
+
+void add_avertex(a_Graph* graph, a_Vertex* vertex) {
+    graph->vertices[graph->nb_vertices] = vertex;
+    graph->nb_vertices++;
+}
+
+void add_edge_to_vertex(a_Graph* graph, int id_vertex, int id_edge) {
+    a_Vertex* vertex = graph->vertices[id_vertex];
+    vertex->edges[vertex->nb_edges] = id_edge;
+    vertex->nb_edges++;
+}
+
+void add_vertex_to_edge(a_Graph* graph, int id_vertex, int id_edge) {
+    a_Edge* edge = graph->edges[id_edge];
+    edge->vertices[edge->nb_vertices] = id_vertex;
+    edge->nb_vertices++;
+}

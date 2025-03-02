@@ -10,6 +10,7 @@
 void enum_covers_recursive(Graph* graph, iList* cur_covered_edges, iList* cur_used_vertices, iListList* all_covers);
 void enum_covers_iterative(Graph* graph);
 void enum_covers_iterative_array(Graph* graph);
+void enum_covers_iterative_array_2(a_Graph* graph);
 void enum_covers_iterative_a(Graph* graph);
 int has_subset(iListList* list, iList* slist);
 #endif //NAIVE_H

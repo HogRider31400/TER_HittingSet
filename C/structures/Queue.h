@@ -10,7 +10,7 @@
 typedef struct QueueElem {
     iList* covered_edges;
     iList* used_vertices;
-    long long int used_mask;
+    unsigned long long int used_mask;
     struct QueueElem* next;
 } QueueElem;
 

@@ -169,3 +169,66 @@ Graph* read_graph_from_file(char *filename) {
     return graph;
 
 }
+a_Graph* read_agraph_from_file(char *filename) {
+    FILE *file = fopen(filename, "r");
+    if (file == NULL) {
+        printf("Erreur: Impossible d'ouvrir %s\n", filename);
+        return NULL;
+    }
+
+    char * line = NULL;
+    size_t len = 0;
+    ssize_t read;
+
+    a_Graph* graph = create_agraph();
+
+    while ((read = getline(&line, &len, file)) != -1) {
+        iList* line_list = parse_line(line, read);
+
+        a_Edge* edge = create_aedge();
+        edge->id = graph->nb_edges+1;
+
+        int idx = 0;
+        for (Node* cur = line_list->head; cur != NULL; cur = cur->next) {
+            edge->vertices[idx] = cur->value;
+            idx++;
+        }
+        edge->nb_vertices = idx;
+
+        add_aedge(graph, edge);
+    }
+
+    fclose(file);
+    if (line)
+        free(line);
+
+    //on init un tableau de correspondance pour que tout tienne sur un tableau
+    //car sinon il y a des trous, beaucoup
+    int corresp[MAX_VERTICES];
+    memset(corresp, -1, sizeof(corresp));
+
+
+
+    for (int i = 0; i < graph->nb_edges; i++) {
+        a_Edge* edge = graph->edges[i];
+
+        for (int j = 0; j < edge->nb_vertices; j++) {
+            int value = edge->vertices[j];
+            if (corresp[value-1] == -1) {
+                corresp[value-1] = graph->nb_vertices;
+            }
+            int id = corresp[value-1];
+
+            if (id >= graph->nb_vertices || graph->vertices[id] == NULL) {
+                a_Vertex* vertex = create_avertex();
+                vertex->id = value;  // Conserve l'ID original qui commence à 1
+                add_avertex(graph, vertex);
+            }
+            //printf("%d %d %d \n", value, id, i);
+
+            add_edge_to_vertex(graph, id, i);
+        }
+    }
+
+    return graph;
+}
