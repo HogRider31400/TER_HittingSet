@@ -8,13 +8,13 @@
 
 Vertex* create_vertex(){
     Vertex* vertex = malloc(sizeof(Vertex));
-    vertex->id = NULL;
+    vertex->id = -1;
     vertex->edges = create_list();
     return vertex;
 }
 Edge* create_edge(){
     Edge* edge= malloc(sizeof(Edge));
-    edge->id = NULL;
+    edge->id = -1;
     edge->vertices = create_list();
     return edge;
 }
