@@ -12,7 +12,7 @@
 
 typedef struct Vertex {
     int id;
-    int official_id;b
+    int official_id;
     iList* edges;
 } Vertex;
 
