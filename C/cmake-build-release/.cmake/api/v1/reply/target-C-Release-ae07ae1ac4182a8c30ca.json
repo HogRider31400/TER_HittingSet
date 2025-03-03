@@ -38,7 +38,7 @@
 			"compileCommandFragments" : 
 			[
 				{
-					"fragment" : "-g -std=gnu2x -fdiagnostics-color=always"
+					"fragment" : "-O3 -DNDEBUG -std=gnu2x -fdiagnostics-color=always"
 				}
 			],
 			"language" : "C",
@@ -58,7 +58,8 @@
 				3,
 				4,
 				9,
-				11
+				11,
+				13
 			]
 		}
 	],
@@ -68,7 +69,7 @@
 		"commandFragments" : 
 		[
 			{
-				"fragment" : "-g",
+				"fragment" : "-O3 -DNDEBUG",
 				"role" : "flags"
 			},
 			{
@@ -101,7 +102,8 @@
 				3,
 				4,
 				9,
-				11
+				11,
+				13
 			]
 		},
 		{
@@ -113,7 +115,8 @@
 				7,
 				8,
 				10,
-				12
+				12,
+				14
 			]
 		}
 	],
@@ -189,6 +192,17 @@
 		{
 			"backtrace" : 1,
 			"path" : "algorithms/berge.h",
+			"sourceGroupIndex" : 1
+		},
+		{
+			"backtrace" : 1,
+			"compileGroupIndex" : 0,
+			"path" : "algorithms/DL.c",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 1,
+			"path" : "algorithms/DL.h",
 			"sourceGroupIndex" : 1
 		}
 	],

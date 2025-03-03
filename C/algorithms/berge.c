@@ -43,30 +43,6 @@ iListList* create_edge_list_list(Graph* graph, int id_edge) {
     return res;
 }
 
-int specialized_covers(Graph* graph, iList* vertices,int id_edge) {
-
-    //On nous a donné une couverture et on doit reconstruire les vertices qu'elle couvre
-
-    iList* covered_edges = create_list();
-
-    for (Node* current = vertices->head; current != NULL; current = current->next) {
-        Vertex* cur_vertex = NULL;
-        for (int i = 0; i < graph->nb_vertices; i++) {
-            if (graph->vertices[i]->id == current->value) {
-                cur_vertex = graph->vertices[i];
-                break;
-            }
-        }
-        if (cur_vertex == NULL) return 0;
-
-        for (Node* current_edge = cur_vertex->edges->head; current_edge != NULL; current_edge = current_edge->next) {
-            append_unique(covered_edges, current_edge->value);
-        }
-    }
-
-    if (covered_edges->size == id_edge) return 1;
-    return 0;
-}
 
 void berge_algorithm(Graph* graph) {
     //le cur Tr qu'on build

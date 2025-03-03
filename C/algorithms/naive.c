@@ -274,7 +274,8 @@ void enum_covers_iterative_array_2(a_Graph* graph) {
     //Tant qu'on a des états à explorer
     while (queue->head != NULL) {
         QueueOElem* cur = queue_o_pop(queue);
-        //print_list(cur->covered_edges);
+        //print_list(cur->used_vertices); printf("\n");
+        //fflush(stdout);
         //printf("%d %f %d \n", cur->used_mask, pow(2, graph->nb_edges)-1, graph->nb_edges);
         if (cur->nb_covered == graph->nb_edges) {//covers(graph, cur->covered_edges) == 1) {
             //print_list(cur->used_vertices);
@@ -303,11 +304,12 @@ void enum_covers_iterative_array_2(a_Graph* graph) {
                 }
                 continue;
             }
+            //printf("%d \n",i );
             if (contains(cur->used_vertices, graph->vertices[i]->id) == 1) continue;
             short int * new_edges = (short int*)malloc(sizeof(short int) *  (graph->nb_edges+1));;
             int new_covered = cur->nb_covered;
             int max_covered = cur->max_covered;
-            memcpy(new_edges, cur->covered_edges, sizeof(int) *  (graph->nb_edges+1));
+            memcpy(new_edges, cur->covered_edges, sizeof(short int) *  (graph->nb_edges+1));
             iList* new_used = deep_copy(cur->used_vertices);
             //long long int new_mask = cur->used_mask;
 
@@ -324,13 +326,15 @@ void enum_covers_iterative_array_2(a_Graph* graph) {
                     }
                 }
             }
+            //print_list(new_used);
             //printf("%d \n", graph->vertices[i]->id);
+            //fflush(stdout);
             append(new_used, graph->vertices[i]->id);
             queue_o_add(queue,new_edges,new_used, new_covered, max_covered);
 
         }
         free(cur->covered_edges);
-        free(cur->used_vertices);
+        free_list(cur->used_vertices);
         free(cur);
     }
     //printf("Affichage coverage");

@@ -3,7 +3,7 @@
 #include "DL.h"
 
 void DL_algorithm(Graph* graph) {
-    printf("\nDL algorithm\n");
+    //printf("\nDL algorithm\n");
     iListList* Tr_H1 = create_list_list();
     // On initialise le dual avec tous les sommets de la première hyperarête
     for (Node* cur = graph->edges[0]->vertices->head; cur != NULL; cur = cur->next) {
@@ -99,7 +99,7 @@ int contains_list(iListList* list, iList* sublist) {
 // Vérifie si une liste de listes contient un superset d'une liste spécifique
 int contains_superset(iListList* list, iList* sublist) {
     for (NodeList* cur = list->head; cur != NULL; cur = cur->next) {
-        if (is_superset(cur->value, sublist)) {
+        if (is_superset(sublist, cur->value)) {
             return 1;
         }
     }

@@ -9,12 +9,13 @@ oom_list = []
 
 
 algorithms = [
-    #"naive_recursive",
-    #"naive_iterative",
+    "naive_recursive",
+    "naive_iterative",
     "naive_iterative_array",
-    #"berge",
-    #"#python_it",
-    #"naive_iterative_array_2"
+    "berge",
+    "#python_it",
+    "naive_iterative_array_2",
+    "dong_li"
 ]
 
 executable_c = ["./cmake-build-debug-1/C.exe"]
@@ -70,7 +71,7 @@ def monitor_memory(process, limit_gb=4):
                 oom_list.append(p.memory_info().rss)
                 process.send_signal(signal.SIGTERM)
                 break
-            time.sleep(0.1)  # Vérifier toutes les 100ms
+            time.sleep(0.1)
         except (psutil.NoSuchProcess, psutil.AccessDenied):
             break
 
@@ -91,7 +92,7 @@ def get_covers_and_time(executable, algorithm, test_path, output=False):
         #print("alo")
         process.kill()
         return {"time": -1}, -1, None
-    #print(test_output)
+    #print(test_output, executable, algorithm, os.path.abspath(test_path).replace("\\","/"))
     if len(test_output[0]) == 0: return {"time": "OOM"}, -1, None
     test_output = test_output[0].decode('utf-8').split("\n")
     if len(test_output) == 1: return {"time": "OOM"}, -1, None
@@ -107,6 +108,7 @@ def get_covers_and_time(executable, algorithm, test_path, output=False):
             time = float(line)
         else:
             covers.append(list(map(int, line.split())))
+            covers[-1].sort()
     return covers, time, hypergraph
 
 #get_covers_and_time(executable_c, "naive_iterative", "C:/Users/Alex/Desktop/TER_HittingSet/C/data/tests/inputs/simple.txt")
@@ -139,9 +141,12 @@ def exec_check(algorithm, check_file, executable = executable_c):
     excepted_output = []
 
     for line in open(check_out):
+        #print(line)
         excepted_output.append(list(map(int, line.split())))
+        excepted_output[-1].sort()
     
     excepted_output.sort()
+    #print(covers)
     covers.sort()
 
     if covers == excepted_output:

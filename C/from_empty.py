@@ -90,3 +90,5 @@ t2 = time.time()
 
 print("Time\n")
 print(str(t2-t1))
+
+sys.stdout.flush()

@@ -62,6 +62,7 @@ int main(int argc, char *argv[]) {
         if (strcmp(cur,"naive_iterative") == 0) time_spent = chrono_func(enum_covers_iterative, graph);
         if (strcmp(cur,"berge") == 0) time_spent = chrono_func(berge_algorithm, graph);
         if (strcmp(cur, "naive_iterative_array") == 0) time_spent = chrono_func(enum_covers_iterative_array, graph);
+        if (strcmp(cur, "dong_li") == 0) time_spent = chrono_func(DL_algorithm, graph);
         if (strcmp(cur, "naive_iterative_array_2") == 0) time_spent = chrono_func_2(enum_covers_iterative_array_2, agraph);
         //printf("%s\n", cur);
     }
@@ -81,7 +82,7 @@ int main(int argc, char *argv[]) {
         printf("\n");
     }*/
 
-    DL_algorithm(graph);
+    //DL_algorithm(graph);
     free_graph(graph);
 
     printf("Time\n");
