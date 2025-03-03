@@ -33,14 +33,23 @@ Graph* create_graph(){ //potentiellement ajouter vertices et edges en param pour
 }
 
 void free_graph(Graph* graph) {
-    for(int i = 0; i < graph->nb_edges; i++) {
-        free(graph->edges[i]);
+    // Libérer les arêtes et leurs listes de sommets
+    for (int i = 0; i < graph->nb_edges; i++) {
+        if (graph->edges[i]) {
+            free_list(graph->edges[i]->vertices);
+            free(graph->edges[i]);
+        }
     }
-    free(graph->edges);
-    for(int i = 0; i < graph->nb_vertices; i++) {
-        free(graph->vertices[i]);
+
+    // Libérer les sommets et leurs listes d'arêtes
+    for (int i = 0; i < graph->nb_vertices; i++) {
+        if (graph->vertices[i]) {
+            free_list(graph->vertices[i]->edges);
+            free(graph->vertices[i]);
+        }
     }
-    free(graph->vertices);
+
+    // Libérer le graphe lui-même
     free(graph);
 }
 

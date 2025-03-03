@@ -197,3 +197,18 @@ void bubble_sort_list(iListList* list) {
     }
 
 }
+
+void free_list_list(iListList* list) {
+    NodeList* current = list->head;
+    NodeList* next;
+
+    while (current != NULL) {
+        next = current->next;
+        free_list(current->value);
+        free(current);
+        current = next;
+    }
+
+    list->head = NULL;
+    list->size = 0;
+}
