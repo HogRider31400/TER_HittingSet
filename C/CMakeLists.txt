@@ -16,4 +16,6 @@ add_executable(C main.c
         structures/Queue.h
         algorithms/berge.c
         algorithms/berge.h
+        algorithms/DL.c
+        algorithms/DL.h
 )

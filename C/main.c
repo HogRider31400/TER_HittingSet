@@ -5,6 +5,7 @@
 #include "graph_reader.h"
 #include "structures/Queue.h"
 #include "algorithms/berge.h"
+#include "algorithms/DL.h"
 #include <string.h>
 //Prend en paramètre une fonction qui prend un graphe un paramètre et l'appelle pour la chronométrer
 double chrono_func( void func(Graph*), Graph* graph) {
@@ -79,6 +80,9 @@ int main(int argc, char *argv[]) {
         print_list(graph->edges[i]->vertices);
         printf("\n");
     }*/
+
+    DL_algorithm(graph);
+    free_graph(graph);
 
     printf("Time\n");
     printf("%f", time_spent);
