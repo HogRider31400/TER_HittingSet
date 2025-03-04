@@ -133,11 +133,6 @@ Graph* read_graph_from_file(char *filename) {
         Edge* edge = graph->edges[i];
 
         for (Node* cur = edge->vertices->head; cur != NULL; cur = cur->next) {
-            // Protection contre les valeurs négatives ou nulles
-            if (cur->value <= 0) continue;
-
-            // Protection contre les valeurs trop grandes
-            if (cur->value > MAX_VERTICES) continue;
 
             int id = cur->value - 1;
 

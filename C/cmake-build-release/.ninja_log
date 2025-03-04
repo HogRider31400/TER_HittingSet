@@ -7,3 +7,12 @@
 16	144	7601174932705039	CMakeFiles/C.dir/algorithms/naive.c.obj	5be20c0d11288654
 7	150	7601175185327427	CMakeFiles/C.dir/structures/List.c.obj	df7fc51f658ba8c4
 825	952	7601175376480233	C.exe	d0fb4351b4668b32
+38	412	7627269361128161	CMakeFiles/C.dir/HGraph.c.obj	24e0b70148063929
+113	414	7627269361873753	CMakeFiles/C.dir/algorithms/berge.c.obj	8995b1c73a4197a0
+86	415	7627269361608876	CMakeFiles/C.dir/structures/Queue.c.obj	e2cada4811455254
+67	428	7627269361417854	CMakeFiles/C.dir/graph_reader.c.obj	e84df28738224fda
+25	429	7627269360997742	CMakeFiles/C.dir/structures/List.c.obj	df7fc51f658ba8c4
+164	453	7627269362375234	CMakeFiles/C.dir/algorithms/DL.c.obj	716efa905f1b4f00
+50	489	7627269361239159	CMakeFiles/C.dir/algorithms/naive.c.obj	5be20c0d11288654
+9	1348	7627269360837078	CMakeFiles/C.dir/main.c.obj	6f6111fc97b83c64
+1348	1509	7627269374219115	C.exe	a9ed1f8cc5c9c00f
