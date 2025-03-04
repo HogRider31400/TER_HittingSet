@@ -7,6 +7,9 @@
 #include "algorithms/berge.h"
 #include "algorithms/DL.h"
 #include <string.h>
+#include "algorithms/BMR.h"
+
+extern iListList* globalTransversals;
 //Prend en paramètre une fonction qui prend un graphe un paramètre et l'appelle pour la chronométrer
 double chrono_func( void func(Graph*), Graph* graph) {
     LARGE_INTEGER start, end, freq;
@@ -44,6 +47,12 @@ void launch_naive_empty(Graph* graph) {
     //printf("Fin\n");
 }
 
+void launch_bmr_empty(Graph* graph) {
+    iList* Vpartition = create_list();
+    BMR_algorithm(graph, Vpartition);
+    free_list(Vpartition);
+}
+
 int main(int argc, char *argv[]) {
     char test_case[] = "./data/example.txt";
     fflush(stdout);
@@ -64,6 +73,12 @@ int main(int argc, char *argv[]) {
         if (strcmp(cur, "naive_iterative_array") == 0) time_spent = chrono_func(enum_covers_iterative_array, graph);
         if (strcmp(cur, "dong_li") == 0) time_spent = chrono_func(DL_algorithm, graph);
         if (strcmp(cur, "naive_iterative_array_2") == 0) time_spent = chrono_func_2(enum_covers_iterative_array_2, agraph);
+        if (strcmp(cur, "bmr") == 0) {
+            globalTransversals = create_list_list();
+            time_spent = chrono_func(launch_bmr_empty, graph);
+            print_list_list(globalTransversals);
+            free_list_list(globalTransversals);
+        };
         //printf("%s\n", cur);
     }
 

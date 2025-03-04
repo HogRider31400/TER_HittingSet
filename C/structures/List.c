@@ -147,7 +147,7 @@ void append_list(iListList* list, iList* elem_list) {
         return;
     }
 
-    NodeList* current = list->head;
+    Node* current = list->head;
     while (current->next != NULL) {
         current = current->next;
     }
