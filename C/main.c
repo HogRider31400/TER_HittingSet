@@ -7,7 +7,9 @@
 #include "algorithms/berge.h"
 #include "algorithms/DL.h"
 #include <string.h>
+#include "structures/Bitmap.h"
 #include "algorithms/BMR.h"
+#include "algorithms/berge_bitmap.h"
 
 extern iListList* globalTransversals;
 //Prend en paramètre une fonction qui prend un graphe un paramètre et l'appelle pour la chronométrer
@@ -47,13 +49,40 @@ void launch_naive_empty(Graph* graph) {
     //printf("Fin\n");
 }
 
-void launch_bmr_empty(Graph* graph) {
-    iList* Vpartition = create_list();
-    BMR_algorithm(graph, Vpartition);
-    free_list(Vpartition);
-}
 
 int main(int argc, char *argv[]) {
+    /*bitmap_list* bitmaps = create_bitmap_list();
+
+    bitmap* b = create_bitmap(1);
+    add_bitmap(bitmaps, copy_bitmap(b));
+
+    set_bit(b,9,1);
+    add_bitmap(bitmaps, copy_bitmap(b));
+    //print_bitmap(b);
+    set_bit(b,9,0);
+    add_bitmap(bitmaps, copy_bitmap(b));
+    //print_bitmap(b);
+    set_bit(b,9,1);
+    add_bitmap(bitmaps, copy_bitmap(b));
+    set_bit(b,0,1);
+    add_bitmap(bitmaps, copy_bitmap(b));
+    set_bit(b,4,1);
+    add_bitmap(bitmaps, copy_bitmap(b));
+
+    bitmap* b2 = create_bitmap(1);
+    set_bit(b2,0, 1);
+    set_bit(b2,1, 1);
+
+
+    //print_bitmap(bitmap_and(b,b2));
+    print_bitmaps(bitmaps);
+    print_as_ints(bitmaps);
+    printf("%d\n", b->nb_bits);
+    bubble_sort_bitmap(bitmaps);
+    print_bitmaps(bitmaps);
+    print_as_ints(bitmaps);
+    fflush(stdout);
+     */
     char test_case[] = "./data/example.txt";
     fflush(stdout);
     if (argc == 3) {
@@ -73,12 +102,7 @@ int main(int argc, char *argv[]) {
         if (strcmp(cur, "naive_iterative_array") == 0) time_spent = chrono_func(enum_covers_iterative_array, graph);
         if (strcmp(cur, "dong_li") == 0) time_spent = chrono_func(DL_algorithm, graph);
         if (strcmp(cur, "naive_iterative_array_2") == 0) time_spent = chrono_func_2(enum_covers_iterative_array_2, agraph);
-        if (strcmp(cur, "bmr") == 0) {
-            globalTransversals = create_list_list();
-            time_spent = chrono_func(launch_bmr_empty, graph);
-            print_list_list(globalTransversals);
-            free_list_list(globalTransversals);
-        };
+        if (strcmp(cur, "berge_bitmap") == 0) time_spent = chrono_func(berge_bitmap_algorithm, graph);
         //printf("%s\n", cur);
     }
 
@@ -98,10 +122,12 @@ int main(int argc, char *argv[]) {
     }*/
 
     //DL_algorithm(graph);
+
     free_graph(graph);
 
     printf("Time\n");
     printf("%f", time_spent);
+
     //printf("Time taken: %f seconds\n", time_spent);
 
     return 0;

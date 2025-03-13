@@ -18,4 +18,8 @@ add_executable(C main.c
         algorithms/berge.h
         algorithms/DL.c
         algorithms/DL.h
+        structures/bitmap.c
+        structures/Bitmap.h
+        algorithms/berge_bitmap.c
+        algorithms/berge_bitmap.h
 )

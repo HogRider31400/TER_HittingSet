@@ -97,6 +97,12 @@ build CMakeFiles/C.dir/algorithms/DL.c.obj: C_COMPILER__C_unscanned_Release C$:/
   OBJECT_DIR = CMakeFiles\C.dir
   OBJECT_FILE_DIR = CMakeFiles\C.dir\algorithms
 
+build CMakeFiles/C.dir/structures/Bitmap.c.obj: C_COMPILER__C_unscanned_Release C$:/Users/Alex/Desktop/TER_HittingSet/C/structures/Bitmap.c || cmake_object_order_depends_target_C
+  DEP_FILE = CMakeFiles\C.dir\structures\Bitmap.c.obj.d
+  FLAGS = -O3 -DNDEBUG -std=gnu2x -fdiagnostics-color=always
+  OBJECT_DIR = CMakeFiles\C.dir
+  OBJECT_FILE_DIR = CMakeFiles\C.dir\structures
+
 
 # =============================================================================
 # Link build statements for EXECUTABLE target C
@@ -105,7 +111,7 @@ build CMakeFiles/C.dir/algorithms/DL.c.obj: C_COMPILER__C_unscanned_Release C$:/
 #############################################
 # Link the executable C.exe
 
-build C.exe: C_EXECUTABLE_LINKER__C_Release CMakeFiles/C.dir/main.c.obj CMakeFiles/C.dir/structures/List.c.obj CMakeFiles/C.dir/HGraph.c.obj CMakeFiles/C.dir/algorithms/naive.c.obj CMakeFiles/C.dir/graph_reader.c.obj CMakeFiles/C.dir/structures/Queue.c.obj CMakeFiles/C.dir/algorithms/berge.c.obj CMakeFiles/C.dir/algorithms/DL.c.obj
+build C.exe: C_EXECUTABLE_LINKER__C_Release CMakeFiles/C.dir/main.c.obj CMakeFiles/C.dir/structures/List.c.obj CMakeFiles/C.dir/HGraph.c.obj CMakeFiles/C.dir/algorithms/naive.c.obj CMakeFiles/C.dir/graph_reader.c.obj CMakeFiles/C.dir/structures/Queue.c.obj CMakeFiles/C.dir/algorithms/berge.c.obj CMakeFiles/C.dir/algorithms/DL.c.obj CMakeFiles/C.dir/structures/Bitmap.c.obj
   FLAGS = -O3 -DNDEBUG
   LINK_LIBRARIES = -lkernel32 -luser32 -lgdi32 -lwinspool -lshell32 -lole32 -loleaut32 -luuid -lcomdlg32 -ladvapi32
   OBJECT_DIR = CMakeFiles\C.dir

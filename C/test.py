@@ -15,7 +15,8 @@ algorithms = [
     "berge",
     "#python_it",
     "naive_iterative_array_2",
-    "dong_li"
+    "dong_li",
+    "berge_bitmap"
 ]
 
 executable_c = ["./cmake-build-debug-1/C.exe"]

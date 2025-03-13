@@ -6,7 +6,7 @@
 			[
 				{
 					"build" : ".",
-					"jsonFile" : "directory-.-Release-d0094a50bb2071803777.json",
+					"jsonFile" : "directory-.-Debug-d0094a50bb2071803777.json",
 					"minimumCMakeVersion" : 
 					{
 						"string" : "3.30"
@@ -19,7 +19,7 @@
 					]
 				}
 			],
-			"name" : "Release",
+			"name" : "Debug",
 			"projects" : 
 			[
 				{
@@ -39,7 +39,7 @@
 				{
 					"directoryIndex" : 0,
 					"id" : "C::@6890427a1f51a3e7e1df",
-					"jsonFile" : "target-C-Release-ae07ae1ac4182a8c30ca.json",
+					"jsonFile" : "target-C-Debug-964881dc7674a956844f.json",
 					"name" : "C",
 					"projectIndex" : 0
 				}
@@ -49,7 +49,7 @@
 	"kind" : "codemodel",
 	"paths" : 
 	{
-		"build" : "C:/Users/Alex/Desktop/TER_HittingSet/C/cmake-build-release",
+		"build" : "C:/Users/Alex/Desktop/TER_HittingSet/C/cmake-build-debug-1",
 		"source" : "C:/Users/Alex/Desktop/TER_HittingSet/C"
 	},
 	"version" : 

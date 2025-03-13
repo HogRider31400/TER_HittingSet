@@ -1,6 +1,6 @@
 # ninja log v6
 25	170	7626439878477626	CMakeFiles/C.dir/HGraph.c.obj	ab5d54423dab384b
-2	283	7627175214294428	build.ninja	d5743ced5ba29928
+2	283	7635746207511516	build.ninja	d5743ced5ba29928
 35	158	7626443814910690	CMakeFiles/C.dir/algorithms/berge.c.obj	a0ec425bb6bdcbba
 7	1217	7626445952078764	CMakeFiles/C.dir/main.c.obj	46b0906270350399
 44	193	7626439878654782	CMakeFiles/C.dir/graph_reader.c.obj	783055641a3b940d
