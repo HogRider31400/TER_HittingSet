@@ -89,7 +89,6 @@ int main(int argc, char *argv[]) {
         char* cur = argv[2];
         strcpy(test_case, cur);
     }
-
     Graph* graph = read_graph_from_file(test_case);
     a_Graph* agraph = convert_graph_to_agraph(graph);
     //printf("%s \n", test_case);

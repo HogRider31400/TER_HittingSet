@@ -73,7 +73,7 @@ bitmap* bitmap_and(bitmap* b1, bitmap* b2) {
     for (int i = 0; i < b2->size; i++) {
         c_bitmap->bits[i] = b2->bits[i] & b1->bits[i];
     }
-    c_bitmap->nb_bits = count_bits(c_bitmap);
+    //c_bitmap->nb_bits = count_bits(c_bitmap);
 
     return c_bitmap;
 }
@@ -82,7 +82,7 @@ bitmap* bitmap_or(bitmap* b1, bitmap* b2) {
     for (int i = 0; i < b2->size; i++) {
         c_bitmap->bits[i] = b2->bits[i] | b1->bits[i];
     }
-    c_bitmap->nb_bits = count_bits(c_bitmap);
+    //c_bitmap->nb_bits = count_bits(c_bitmap);
 
     return c_bitmap;
 }

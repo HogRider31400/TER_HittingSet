@@ -13,57 +13,54 @@
 #include "HGraph.h"
 /* This code is public domain -- Will Hartung 4/9/09 */
 // https://stackoverflow.com/questions/735126/are-there-alternate-implementations-of-gnu-getline-interface/735472#735472
+typedef intptr_t ssize_t;
 
-size_t getline(char **lineptr, size_t *n, FILE *stream) {
-    char *bufptr = NULL;
-    char *p = bufptr;
-    size_t size;
+ssize_t getline(char **lineptr, size_t *n, FILE *stream) {
+    size_t pos;
     int c;
 
-    if (lineptr == NULL) {
+    if (lineptr == NULL || stream == NULL || n == NULL) {
+        errno = EINVAL;
         return -1;
     }
-    if (stream == NULL) {
-        return -1;
-    }
-    if (n == NULL) {
-        return -1;
-    }
-    bufptr = *lineptr;
-    size = *n;
 
-    c = fgetc(stream);
+    c = getc(stream);
     if (c == EOF) {
         return -1;
     }
-    if (bufptr == NULL) {
-        bufptr = malloc(128);
-        if (bufptr == NULL) {
+
+    if (*lineptr == NULL) {
+        *lineptr = malloc(128);
+        if (*lineptr == NULL) {
             return -1;
         }
-        size = 128;
+        *n = 128;
     }
-    p = bufptr;
+
+    pos = 0;
     while(c != EOF) {
-        if ((p - bufptr) > (size - 1)) {
-            size = size + 128;
-            bufptr = realloc(bufptr, size);
-            if (bufptr == NULL) {
+        if (pos + 1 >= *n) {
+            size_t new_size = *n + (*n >> 2);
+            if (new_size < 128) {
+                new_size = 128;
+            }
+            char *new_ptr = realloc(*lineptr, new_size);
+            if (new_ptr == NULL) {
                 return -1;
             }
+            *n = new_size;
+            *lineptr = new_ptr;
         }
-        *p++ = c;
+
+        ((unsigned char *)(*lineptr))[pos ++] = c;
         if (c == '\n') {
             break;
         }
-        c = fgetc(stream);
+        c = getc(stream);
     }
 
-    *p++ = '\0';
-    *lineptr = bufptr;
-    *n = size;
-
-    return p - bufptr - 1;
+    (*lineptr)[pos] = '\0';
+    return pos;
 }
 
 iList* parse_line(char *line, int size) {
@@ -106,10 +103,13 @@ iList* parse_line(char *line, int size) {
  *  Qui est un hypergraphe à 3 hyper arêtes et 4 sommets
  */
 Graph* read_graph_from_file(char *filename) {
+
     FILE *file = fopen(filename, "r");
     if (file == NULL) {
+        printf("peut pas lire %s \n", filename);
         return NULL;
     }
+    //printf("On a lu\n");
 
     char * line = NULL;
     size_t len = 0;
@@ -119,7 +119,10 @@ Graph* read_graph_from_file(char *filename) {
 
     while ((read = getline(&line, &len, file)) != -1) {
         iList* line_list = parse_line(line, read);
+        //print_list(line_list);
+        //printf("\n");
         Edge* edge = create_edge();
+
         edge->id = graph->nb_edges+1;
         edge->vertices = line_list;
         add_edge(graph, edge);
@@ -128,12 +131,13 @@ Graph* read_graph_from_file(char *filename) {
     fclose(file);
     if (line)
         free(line);
-
+    //printf("Fichier lu %d\n",graph->nb_edges);
     for (int i = 0; i < graph->nb_edges; i++) {
+        //printf("%d ", graph->edges[i]->id);
         Edge* edge = graph->edges[i];
 
         for (Node* cur = edge->vertices->head; cur != NULL; cur = cur->next) {
-
+            //printf("%d ", cur->value);
             int id = cur->value - 1;
 
             if (graph->vertices[id] == NULL) {
