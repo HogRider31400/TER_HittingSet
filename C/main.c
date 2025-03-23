@@ -10,8 +10,9 @@
 #include "structures/Bitmap.h"
 #include "algorithms/BMR.h"
 #include "algorithms/berge_bitmap.h"
+#include "algorithms/BMR_bitmap.h"
 
-extern iListList* globalTransversals;
+iListList* globalTransversals = NULL;
 //Prend en paramètre une fonction qui prend un graphe un paramètre et l'appelle pour la chronométrer
 double chrono_func( void func(Graph*), Graph* graph) {
     LARGE_INTEGER start, end, freq;
@@ -102,6 +103,9 @@ int main(int argc, char *argv[]) {
         if (strcmp(cur, "dong_li") == 0) time_spent = chrono_func(DL_algorithm, graph);
         if (strcmp(cur, "naive_iterative_array_2") == 0) time_spent = chrono_func_2(enum_covers_iterative_array_2, agraph);
         if (strcmp(cur, "berge_bitmap") == 0) time_spent = chrono_func(berge_bitmap_algorithm, graph);
+        if (strcmp(cur, "bmr") == 0) time_spent = chrono_func(launch_bmr_empty, graph);
+        if (strcmp(cur, "bmr_bitmap") == 0) time_spent = chrono_func(launch_bmr_bitmap, graph);
+
         //printf("%s\n", cur);
     }
 

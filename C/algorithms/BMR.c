@@ -15,7 +15,7 @@
  #include "../HGraph.h"
  
  // Variable globale pour accumuler les transversaux minimaux finaux
- iListList* globalTransversals = NULL;
+ extern iListList* globalTransversals;
 static int is_transversal(Graph* fullGraph, iList* candidate);
 static int is_minimal_transversal(Graph* fullGraph, iList* candidate);
 
@@ -77,7 +77,6 @@ static void merge_transversals(iListList* global, iListList* local, Graph* fullG
   
          double avgCard = average_edge_cardinality(Epartition);
          double a = avgCard * Epartition->nb_edges;
- 
          if (Epartition->nb_edges >= 2 && a >= 50.0) {
              BMR_algorithm(Epartition, Vpartition);
          } else {
@@ -326,4 +325,16 @@ static int is_minimal_transversal(Graph* fullGraph, iList* candidate) {
          free_list(candidateMinus);
     }
     return 1;
+}
+
+void launch_bmr_empty(Graph* graph) {
+    globalTransversals = create_list_list();  // Initialiser la liste globale
+    iList* Vpartition = create_list();  // Créer la partition vide
+    BMR_algorithm(graph, Vpartition);  // Lancer BMR
+    free_list(Vpartition);  // Libérer la mémoire de la partition
+
+    // Afficher les résultats
+    printf("Transversaux finaux :\n");
+    print_list_list(globalTransversals);
+    free_list_list(globalTransversals);
 }
