@@ -12,10 +12,17 @@ H = {
 
 import copy
 
-d_H = [
-    [2],
-    [1, 3]
-]
+d_H = {
+    "vertices" : {
+        1 : [1],
+        2 : [0],
+        3 : [1]
+    },
+    "edges" : {
+        0 : [2],
+        1 : [1,3]
+    }
+}
 
 def add_vertices(H, eid, edge):
     for val in edge:
@@ -23,6 +30,13 @@ def add_vertices(H, eid, edge):
             H["vertices"][val] = []
         if not eid in H["vertices"][val]:
             H["vertices"][val].append(eid)
+
+def merge_in(l1,l2):
+    #A faire efficacement, là c en N^2 mdr
+
+    for elem in l2:
+        if not elem in l1:
+            l1.append(elem)
 
 def split(H, x):
     #H ou y'a pas x de base
@@ -50,6 +64,25 @@ def split(H, x):
                 add_vertices(Hmx, edge, Hmx["edges"][edge])
     
     return Hnx, Hmx
+
+def hyper_union(H1,H2):
+    Hu = {
+        "vertices" : copy.deepcopy(H1["vertices"]),
+        "edges" : copy.deepcopy(H1["edges"])
+    }
+
+    for edge in H2["edges"]:
+        cur_edge = H2["edges"][edge]
+
+        if not edge in H1["edges"]:
+            Hu["edges"][edge] = copy.deepcopy(cur_edge)
+        else:
+            merge_in(Hu["edges"][edge], cur_edge)
+        
+        add_vertices(Hu, edge, cur_edge)
+
+    return Hu
+
 
 #On regarde si B C A
 def is_subset(A,B):
@@ -101,4 +134,60 @@ def rec(H):
     print("le min Tr:", minTr(res + res2))
     return minTr(res + res2)
 
-print(rec(H))
+#Teste si H et G sont duaux, donc si G représente l'hypergraphe des transversaux minimaux de H
+def FK_A(H,G):
+
+    #cas terminaux
+    #if len(H["edges"].keys()) == 0: or len(G["edges"].keys()) == 0:
+    #    return False
+    if len(H["edges"].keys()) == 0:
+        print("On est sur la fin :")
+        print("H :", H)
+        print("G :", G)
+        return len(G["edges"].keys()) == 1 and list(G["edges"].keys())[0] == []
+        
+    if len(G["edges"].keys()) == 0:
+        print("On est sur la fin :")
+        print("H :", H)
+        print("G :", G)
+        return len(H["edges"].keys()) == 1 and list(H["edges"].keys())[0] == []
+        
+    
+    if len(H["edges"].keys()) * len(G["edges"].keys()) == 1:
+        tH = list(H["edges"].values())[0]
+        tG = list(G["edges"].values())[0]
+        tH.sort()
+        tG.sort()
+        print("Cas terminal tH tG :")
+        print(tH,tG, tH == tG)
+        return tH == tG
+    print("H :", H)
+    print("G :", G)
+    if len(H["vertices"]) > 0:
+        x = list(H["vertices"].keys())[0]
+    else:
+        x = list(G["vertices"].keys())[0]
+    Hnx, Hmx = split(H, x)
+    Gnx, Gmx = split(G, x)
+
+    print(f"Variable choisie: {x}")
+    print("Hnx:", Hnx)
+    print("Hmx:", Hmx)
+    print("Gnx:", Gnx)
+    print("Gmx:", Gmx)
+
+    H_union = hyper_union(Hnx, Hmx)
+    G_union = hyper_union(Gnx, Gmx)
+
+    print("Union Hnx ∪ Hmx :", H_union)
+    print("Union Gnx ∪ Gmx :", G_union)
+    #On regarde les transversaux sans x de base dans H et on enlève complètement x de G
+    r1 = FK_A(Hnx, hyper_union(Gmx,Gnx))
+
+    #Maintenant on regarde pour G sans x de base, et on enlève complètement x de H
+    r2 = FK_A(Gnx, hyper_union(Hmx,Hmx))
+
+
+    return r1 and r2
+
+print(FK_A(H, d_H))
