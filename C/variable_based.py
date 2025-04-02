@@ -1,12 +1,10 @@
 H = {
     "vertices" : {
         1 : [0],
-        2 : [0, 1],
-        3 : [1]
+        2 : [0]
     },
     "edges" : {
-        0 : [1, 2],
-        1 : [2, 3]
+        0 : [1, 2]
     }
 }
 
@@ -14,13 +12,12 @@ import copy
 
 d_H = {
     "vertices" : {
-        1 : [1],
-        2 : [0],
-        3 : [1]
+        1 : [0],
+        2 : [1]
     },
     "edges" : {
-        0 : [2],
-        1 : [1,3]
+        0 : [1],
+        1 : [2]
     }
 }
 
@@ -67,19 +64,19 @@ def split(H, x):
 
 def hyper_union(H1,H2):
     Hu = {
-        "vertices" : copy.deepcopy(H1["vertices"]),
-        "edges" : copy.deepcopy(H1["edges"])
+        "vertices" : {},
+        "edges" : {}
     }
 
-    for edge in H2["edges"]:
-        cur_edge = H2["edges"][edge]
+    edges = list(copy.deepcopy(H1["edges"]).values()) + list(copy.deepcopy(H2["edges"]).values())
+    edges.sort(key=len)
+    
+    for edge in edges:
+        e_id = len(Hu["edges"])
 
-        if not edge in H1["edges"]:
-            Hu["edges"][edge] = copy.deepcopy(cur_edge)
-        else:
-            merge_in(Hu["edges"][edge], cur_edge)
-        
-        add_vertices(Hu, edge, cur_edge)
+        if not has_subset(Hu["edges"].values(), edge):
+            Hu["edges"][e_id] = edge
+            add_vertices(Hu, e_id, edge)
 
     return Hu
 
