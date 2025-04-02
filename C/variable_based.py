@@ -1,23 +1,26 @@
 H = {
-    "vertices" : {
-        1 : [0],
-        2 : [0]
-    },
-    "edges" : {
-        0 : [1, 2]
-    }
-}
+     "vertices" : {
+         1 : [0],
+         2 : [0, 1],
+         3 : [1]
+     },
+     "edges" : {
+         0 : [1, 2],
+         1 : [2, 3]
+     }
+ }
 
 import copy
 
 d_H = {
     "vertices" : {
-        1 : [0],
-        2 : [1]
+        1 : [1],
+        2 : [0],
+        3 : [1]
     },
     "edges" : {
-        0 : [1],
-        1 : [2]
+        0 : [2],
+        1 : [1, 3]
     }
 }
 
@@ -55,7 +58,7 @@ def split(H, x):
             add_vertices(Hnx, edge, cur_edge)
             #add_vertices(Hmx, edge, cur_edge)
         else:
-            if len(cur_edge) > 1:
+            if len(cur_edge) >= 1:
                 Hmx["edges"][edge] = copy.deepcopy(cur_edge)
                 Hmx["edges"][edge].remove(x)
                 add_vertices(Hmx, edge, Hmx["edges"][edge])
@@ -141,13 +144,13 @@ def FK_A(H,G):
         print("On est sur la fin :")
         print("H :", H)
         print("G :", G)
-        return len(G["edges"].keys()) == 1 and list(G["edges"].keys())[0] == []
+        return len(G["edges"].keys()) == 1 and list(G["edges"].values())[0] == []
         
     if len(G["edges"].keys()) == 0:
         print("On est sur la fin :")
         print("H :", H)
         print("G :", G)
-        return len(H["edges"].keys()) == 1 and list(H["edges"].keys())[0] == []
+        return len(H["edges"].keys()) == 1 and list(H["edges"].values())[0] == []
         
     
     if len(H["edges"].keys()) * len(G["edges"].keys()) == 1:
@@ -182,7 +185,7 @@ def FK_A(H,G):
     r1 = FK_A(Hnx, hyper_union(Gmx,Gnx))
 
     #Maintenant on regarde pour G sans x de base, et on enlève complètement x de H
-    r2 = FK_A(Gnx, hyper_union(Hmx,Hmx))
+    r2 = FK_A(Gnx, hyper_union(Hmx,Hnx))
 
 
     return r1 and r2
