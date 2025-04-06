@@ -187,7 +187,6 @@ def FK_A(H,G):
     #Maintenant on regarde pour G sans x de base, et on enlève complètement x de H
     r2 = FK_A(Gnx, hyper_union(Hmx,Hnx))
 
-
     return r1 and r2
 
 print(FK_A(H, d_H))

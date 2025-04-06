@@ -9,19 +9,19 @@ oom_list = []
 
 
 algorithms = [
-    #"naive_recursive",
-    #"naive_iterative",
-    #"naive_iterative_array",
+    "naive_recursive",
+    "naive_iterative",
+    "naive_iterative_array",
     "berge",
-    #"#python_it",
-    #"naive_iterative_array_2",
+    "#python_it",
+    "naive_iterative_array_2",
     "dong_li",
     "berge_bitmap"
 ]
-
+TEST_TYPE = "/SDFP/"
 executable_c = ["./cmake-build-debug-1/C.exe"]
 executable_python = ["python" ,"./from_empty.py"]
-test_files = [f for f in os.listdir("./data") if f.endswith('.txt')]
+test_files = [f for f in os.listdir("./data" + TEST_TYPE) if f.endswith('.dat')]
 check_files = [f for f in os.listdir("./data/tests/inputs") if f.endswith('.txt')]
 
 def parse_hypergraph(file_path):
@@ -88,7 +88,7 @@ def get_covers_and_time(executable, algorithm, test_path, output=False):
         monitor_thread.daemon = True
         monitor_thread.start()
     
-        test_output = process.communicate(timeout=60)
+        test_output = process.communicate(timeout=120)
     except subprocess.TimeoutExpired:
         #print("alo")
         process.kill()
@@ -179,6 +179,7 @@ for algorithm in algorithms:
 print()
 print("Tests de performance")
 print()
+test_files.sort(key = lambda x: int(x.replace("SDFP","").replace(".dat","")))
 ml = max([len(s) for s in algorithms])
 header = " " * max([len(s) for s in algorithms])
 
@@ -199,9 +200,14 @@ for algorithm in algorithms:
         executable = executable_c
 
     cur_results = {}
-
+    has_failed = False
     for test_file in test_files:
-        cur_results[test_file] = exec_test(algorithm,"./data/" + test_file,executable)
+        if has_failed:
+            cur_results[test_file] = {"time" : -1}
+        else:
+            cur_results[test_file] = exec_test(algorithm,"./data" + TEST_TYPE + test_file,executable)
+            if(cur_results[test_file]["time"] == -1):
+                has_failed = True
 
     results[algorithm] = cur_results
 

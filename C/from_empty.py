@@ -59,36 +59,78 @@ def has_subset(bl, l):
             return True
     return False
 
-def enum_covers():
-    queue = [([],[])]
+def enum_covers(edges):
+    Tr = [[v] for v in edges[0]]
 
-    while len(queue) > 0:
-        cur = queue.pop(0)
-        cur_covered_edges = cur[0]
-        cur_used_vertices = cur[1]
-        if(covers(cur_covered_edges)):
-            if not has_subset(sols, cur_used_vertices):
-                sols.add(tuple(cur_used_vertices))
-                print(' '.join(str(x) for x in cur_used_vertices) + "\n")
-            continue
-        deb = 1
-        if len(cur_used_vertices) > 0:
-            deb = cur_used_vertices[-1]
-        for i in range(deb, len(vertices)+1):
-            if i in cur_used_vertices: continue
+    for i in range(1, len(edges)):
+        c_Tr = [[v] for v in edges[i]]
 
-            new_edges = set(cur_covered_edges)
+        n_Tr = [list(set(x + y)) for x in Tr for y in c_Tr]
+        n_Tr.sort(key = len)
+        f_Tr = []
 
-            for edge in vertices[i]:
-                new_edges.add(edge)
+        for elem in n_Tr:
+            if not has_subset(f_Tr, elem):
+                f_Tr.append(elem)
+        Tr = f_Tr
+    
+    return Tr
+
+def get_comp(start):
+    comp = []
+    vu = set()
+    e_vu = set()
+    queue = [start]
+
+    while len(queue) != 0:
+        cur = queue.pop(-1)
+        vu.add(cur)
+        
+        for edge in h["vertices"][cur]:
+            if edge in e_vu:
+                continue
             
-            queue.append((list(new_edges), cur_used_vertices + [i]))
+            e_vu.add(edge)
+            comp.append(edge)
+            for vertice in h["edges"][edge]:
+                if vertice in vu:
+                    continue
+                vu.add(vertice)
+                queue.append(vertice)
+    
+    return comp, vu
+
+def get_comps():
+    comps = []
+    vu = set()
+
+    for vertice in h["vertices"]:
+        if vertice in vu:
+            continue
+        n_comp,n_vu = get_comp(vertice)
+
+        vu = vu | n_vu
+        comps.append(n_comp)
+    
+    return comps
 
 t1 = time.time()
-enum_covers()
+comps = get_comps()
+Trs = [[]]
+for comp in comps:
+    #print(comp)
+    c_edges = [edges[x] for x in comp]
+    n_Trs = enum_covers(c_edges)
+    f_Trs = []
+    for elem in n_Trs:
+        for elem_2 in Trs:
+            f_Trs.append(elem + elem_2)
+    Trs = f_Trs
+
+for tr in Trs:
+    print(' '.join(str(x) for x in tr) + "\n")
 t2 = time.time()
 
 print("Time\n")
-print(str(t2-t1))
-
+print(str(t2-t1) + "\n" + str(len(Trs)))
 sys.stdout.flush()
