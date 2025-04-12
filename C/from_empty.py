@@ -112,11 +112,61 @@ def get_comps():
 
         vu = vu | n_vu
         comps.append(n_comp)
-    
     return comps
 
+def normalize(inp):
+    corresp = {}
+    icorresp = {}
+    out = []
+    cid = 1
+    for elem in inp:
+        cur = []
+        for celem in elem:
+            if celem in corresp:
+                cur.append(corresp[celem])
+            else:
+                corresp[celem] = cid
+                icorresp[cid] = celem
+                cur.append(cid)
+                cid += 1
+        out.append(cur)
+    return icorresp, out
+
+def unnormalize(inp, co):
+    out = []
+
+    for elem in inp:
+        cur = []
+        for celem in elem:
+            cur.append(co[celem])
+        out.append(cur)
+    return out
+
 t1 = time.time()
-Trs = t.dong_li(edges)
+comps = get_comps()
+
+if len(comps) > 1:
+    Trs = [[]]
+    for comp in comps:
+        #print("comp : " + ' '.join(str(x) for x in comp) + "\n")
+        #print(comp)
+        comp.sort()
+        cid = 0
+        corresp = {}
+
+        cn_edges = [edges[x] for x in comp]
+        co, c_edges = normalize(cn_edges)
+        n_Trs = t.dong_li(c_edges)
+
+        n_Trs = unnormalize(n_Trs, co)
+        f_Trs = []
+        for elem in n_Trs:
+            for elem_2 in Trs:
+                f_Trs.append(elem + elem_2)
+        Trs = f_Trs
+else:
+    Trs = t.dong_li(edges)
+
 for tr in Trs:
     print(' '.join(str(x) for x in tr) + "\n")
 t2 = time.time()

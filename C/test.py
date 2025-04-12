@@ -12,11 +12,11 @@ algorithms = [
     #"naive_recursive",
     #"naive_iterative",
     #"naive_iterative_array",
-    "berge",
+    #"berge",
     "#python_it",
     #"naive_iterative_array_2",
-    "dong_li",
-    "berge_bitmap"
+    #"dong_li",
+    #"berge_bitmap"
 ]
 TEST_TYPE = "/SDTH/"
 executable_c = ["./cmake-build-debug-1/C.exe"]
