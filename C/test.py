@@ -9,16 +9,16 @@ oom_list = []
 
 
 algorithms = [
-    "naive_recursive",
-    "naive_iterative",
-    "naive_iterative_array",
+    #"naive_recursive",
+    #"naive_iterative",
+    #"naive_iterative_array",
     "berge",
     "#python_it",
-    "naive_iterative_array_2",
+    #"naive_iterative_array_2",
     "dong_li",
     "berge_bitmap"
 ]
-TEST_TYPE = "/SDFP/"
+TEST_TYPE = "/SDTH/"
 executable_c = ["./cmake-build-debug-1/C.exe"]
 executable_python = ["python" ,"./from_empty.py"]
 test_files = [f for f in os.listdir("./data" + TEST_TYPE) if f.endswith('.dat')]
@@ -179,7 +179,7 @@ for algorithm in algorithms:
 print()
 print("Tests de performance")
 print()
-test_files.sort(key = lambda x: int(x.replace("SDFP","").replace(".dat","")))
+test_files.sort(key = lambda x: int(x.replace("SDTH","").replace(".dat","")))
 ml = max([len(s) for s in algorithms])
 header = " " * max([len(s) for s in algorithms])
 

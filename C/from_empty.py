@@ -6,6 +6,7 @@
 import sys
 import time
 
+import transversal_enumeration as t
 print = sys.stdout.write
 
 def parse_hypergraph(file_path):
@@ -115,22 +116,11 @@ def get_comps():
     return comps
 
 t1 = time.time()
-comps = get_comps()
-Trs = [[]]
-for comp in comps:
-    #print(comp)
-    c_edges = [edges[x] for x in comp]
-    n_Trs = enum_covers(c_edges)
-    f_Trs = []
-    for elem in n_Trs:
-        for elem_2 in Trs:
-            f_Trs.append(elem + elem_2)
-    Trs = f_Trs
-
+Trs = t.dong_li(edges)
 for tr in Trs:
     print(' '.join(str(x) for x in tr) + "\n")
 t2 = time.time()
 
 print("Time\n")
-print(str(t2-t1) + "\n" + str(len(Trs)))
+print(str(t2-t1))
 sys.stdout.flush()

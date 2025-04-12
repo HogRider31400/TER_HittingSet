@@ -1,12 +1,15 @@
 H = {
      "vertices" : {
          1 : [0],
-         2 : [0, 1],
-         3 : [1]
+         2 : [0, 2],
+         3 : [0, 1],
+         4 : [1, 2],
+         5 : [1]
      },
      "edges" : {
-         0 : [1, 2],
-         1 : [2, 3]
+         0 : [1, 2, 3],
+         1 : [3, 4, 5],
+         2 : [2, 4]
      }
  }
 
@@ -14,13 +17,18 @@ import copy
 
 d_H = {
     "vertices" : {
-        1 : [1],
-        2 : [0],
-        3 : [1]
+        1 : [2],
+        2 : [0,3,4],
+        3 : [0, 1],
+        4 : [1,2,3],
+        5 : [4]
     },
     "edges" : {
-        0 : [2],
-        1 : [1, 3]
+        0 : [2, 3],
+        1 : [3, 4],
+        2 : [1, 4],
+        3 : [2, 4],
+        4 : [2, 5]
     }
 }
 
@@ -182,10 +190,10 @@ def FK_A(H,G):
     print("Union Hnx ∪ Hmx :", H_union)
     print("Union Gnx ∪ Gmx :", G_union)
     #On regarde les transversaux sans x de base dans H et on enlève complètement x de G
-    r1 = FK_A(Hnx, hyper_union(Gmx,Gnx))
+    r1 = FK_A(Hnx, Gmx)
 
     #Maintenant on regarde pour G sans x de base, et on enlève complètement x de H
-    r2 = FK_A(Gnx, hyper_union(Hmx,Hnx))
+    r2 = FK_A(Gnx, Hmx)
 
     return r1 and r2
 
