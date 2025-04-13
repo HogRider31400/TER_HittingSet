@@ -17,19 +17,14 @@ def gen_write(name, size, density):
             f.write(" ".join(str(x) for x in e) + "\n")
 #On va de 2 à 100 de densité ! (incrément de 10)
 
-density = 2
-while density < 100:
-    
-    newpath = "./data/random/"+str(density)+"/"
-    if not os.path.exists(newpath):
-        os.makedirs(newpath)
 
-    for i in range(18):
-        size = random.randint(density, 120)
-        name = "./data/random/"+str(density)+"/random_"+str(size)+".dat"
+newpath = "./data/random/"
+if not os.path.exists(newpath):
+    os.makedirs(newpath)
 
-        gen_write(name,size,density)
-    
-    density += 10
+for i in range(50):
+    size = random.randint(5, 20)
+    name = "./data/random/random_"+str(i)+".dat"
 
+    gen_write(name,size,5)
 
