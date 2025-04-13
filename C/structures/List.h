@@ -45,4 +45,5 @@ void print_list_list(iListList* list);
 void bubble_sort_list(iListList* list);
 void swap_list(NodeList* n1, NodeList* n2);
 void free_list_list(iListList* list);
+void append_all(iList* dest, iList* source);
 #endif //LIST_H

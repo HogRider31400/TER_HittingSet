@@ -130,6 +130,13 @@ void append_unique(iList* list, int elem_value) {
     append(list,elem_value);
 }
 
+void append_all(iList* dest, iList* source) {
+    if (!dest || !source) return;
+    for (Node* n = source->head; n != NULL; n = n->next) {
+        append(dest, n->value);
+    }
+}
+
 //Ici on s'affaire aux listes de listes
 iListList* create_list_list() {
     iListList* list = malloc(sizeof(iListList));
