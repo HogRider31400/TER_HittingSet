@@ -1,4 +1,5 @@
 from typing import List, Set
+from utils import load_hypergraph
 
 
 def is_superset_of_any(candidate: Set[int], sets: List[Set[int]]) -> bool:
@@ -9,15 +10,6 @@ def is_superset_of_any(candidate: Set[int], sets: List[Set[int]]) -> bool:
         if s <= candidate: 
             return True
     return False
-
-
-def load_hypergraph(file_path: str) -> List[Set[int]]:
-    """
-
-    → Retourne une liste de sets du genre : [{1,2,3}, {4,5}, {2,5,6}]
-    """
-    with open(file_path, 'r') as f:
-        return [set(map(int, line.strip().split())) for line in f if line.strip()]
 
 
 def DL_algorithm(hypergraph: List[Set[int]]) -> List[Set[int]]:

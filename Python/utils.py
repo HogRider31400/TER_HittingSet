@@ -1,4 +1,5 @@
 from pathlib import Path
+from typing import List, Set
 
 def get_project_root() -> Path:
     """
@@ -23,3 +24,11 @@ def is_superset_of_any(candidate: set, sets: list[set]) -> bool:
         if candidate > s: 
             return True
     return False
+
+def load_hypergraph(file_path: str) -> List[Set[int]]:
+    """
+
+    → Retourne une liste de sets du genre : [{1,2,3}, {4,5}, {2,5,6}]
+    """
+    with open(file_path, 'r') as f:
+        return [set(map(int, line.strip().split())) for line in f if line.strip()]
