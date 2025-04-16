@@ -81,7 +81,6 @@ def BMR_algorithm(graph, Vpartition, full_graph):
         Epartition = build_Epartition(graph, vi, Vpartition, all_vertices)
         Vpartition.add(vi)
         a = average_edge_cardinality(Epartition) * len(Epartition)
-        #print(Epartition)
         if len(Epartition) >= 2 and a >= 55:
             #print(f"[BMR] depth={len(Vpartition)} | vi={vi} | Epartition={len(Epartition)} | a={a:.2f}")
             Tr_rec = BMR_algorithm(Epartition, Vpartition, full_graph)

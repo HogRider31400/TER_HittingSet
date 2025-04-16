@@ -271,9 +271,9 @@ static PyObject* dong_li(PyObject* self, PyObject* args) {
         for(int j = 0; j < len_TrCur; j++){
             //printf("On est %d %d\n", i, j);
             Bitmap* cur = TrCur[j];
-            for(int cur_pos = bitmap_first_bit(TrCur[j]); cur_pos != -1; cur_pos = bitmap_next_bit(TrCur[j], cur_pos+1)){
+            //for(int cur_pos = bitmap_first_bit(TrCur[j]); cur_pos != -1; cur_pos = bitmap_next_bit(TrCur[j], cur_pos+1)){
                 //printf("%d ", cur_pos);
-            }
+            //}
             //printf("\n");
             Bitmap* res = bitmap_create(nb_vertices);
             bitmap_and(res, cur, ei);

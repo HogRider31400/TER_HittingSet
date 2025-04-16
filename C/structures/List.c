@@ -148,7 +148,7 @@ void append_list(iListList* list, iList* elem_list) {
     NodeList* new_node = malloc(sizeof(NodeList));
     new_node->value = elem_list;
     new_node->next = NULL;
-
+    list->size++;
     if (list->head == NULL) {
         list->head = new_node;
         return;
@@ -160,7 +160,6 @@ void append_list(iListList* list, iList* elem_list) {
     }
     current->next = new_node;
 
-    list->size++;
 }
 
 void print_list_list(iListList* list) {
