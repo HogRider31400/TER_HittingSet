@@ -4,25 +4,32 @@ import signal
 import psutil
 import threading
 import time
+import re
 
 oom_list = []
 
 
 algorithms = [
-    "naive_recursive",
-    "naive_iterative",
-    "naive_iterative_array",
+    #"naive_recursive",
+    #"naive_iterative",
+    #"naive_iterative_array",
     #"berge",
     #"#python_it",
-    "naive_iterative_array_2",
-    #"dong_li",
+    #"naive_iterative_array_2",
+    "dong_li",
+    "DL_opti",
+    #"DL_singl", # Celui-là est faux
+    "DL_Trgf",
+    "DL_Trgn",
+    "DL_fopti",
+    "DL_foptiv",
     #"berge_bitmap"
 ]
-TEST_TYPE = "/TH/"
-executable_c = ["./cmake-build-debug-1/C.exe"]
-executable_python = ["python" ,"./from_empty.py"]
-test_files = [f for f in os.listdir("./data" + TEST_TYPE) if f.endswith('.dat')]
-check_files = [f for f in os.listdir("./data/tests/inputs") if f.endswith('.txt')]
+TEST_TYPE = "/preprocess/"
+executable_c = ["build/C.exe"]
+executable_python = ["python" ,"C/from_empty.py"]
+test_files = [f for f in os.listdir("C/data" + TEST_TYPE) if f.endswith('.dat')]
+check_files = [f for f in os.listdir("C/data/tests/inputs") if f.endswith('.txt')]
 
 def parse_hypergraph(file_path):
     #Faire très attention à le parse de la même manière qu'en C, pas très dur
@@ -35,7 +42,8 @@ def parse_hypergraph(file_path):
     with open(file_path) as f:
         cur = 0
         for line in f:
-            line = line.replace("\n","")
+            l_slices = re.split(r'[|#]', line)
+            line = l_slices[0]
             #print(line)
             cur_vertices = list(map(int, line.split()))
             hypergraph["edges"].append(cur_vertices)
@@ -80,7 +88,7 @@ def get_covers_and_time(executable, algorithm, test_path, output=False):
     hypergraph = parse_hypergraph(test_path)
     #print(hypergraph)
     try:
-        process = subprocess.Popen([*executable, algorithm, os.path.abspath(test_path).replace("\\","/")],
+        process = subprocess.Popen([*executable, algorithm, test_path],
                              stdout=subprocess.PIPE, 
                              stderr=subprocess.PIPE)
 
@@ -134,8 +142,8 @@ def exec_test(algorithm, test_path, executable = executable_c):
     return result
 
 def exec_check(algorithm, check_file, executable = executable_c):
-    check_inp = "./data/tests/inputs/" + check_file
-    check_out = "./data/tests/outputs/" + check_file
+    check_inp = "C/data/tests/inputs/" + check_file
+    check_out = "C/data/tests/outputs/" + check_file
 
     covers,time,_ = get_covers_and_time(executable, algorithm, check_inp)
 
@@ -168,18 +176,23 @@ for algorithm in algorithms:
     else:
         executable = executable_c
 
+    test_ct = 0
     for check_file in check_files:
         result = exec_check(algorithm, check_file, executable)
+        ##if result["is_correct"]:
+        #    print(f"{algorithm}: {check_file} - Correct")
         if result["is_correct"]:
-            print(f"{algorithm}: {check_file} - Correct")
+            test_ct += 1
         else:
             print(f"{algorithm}: {check_file} - Incorrect")
             print(f"Expected: {result['excepted']}")
             print(f"Got: {result['got']}")
+    if test_ct == len(check_files): 
+            print(f"{algorithm}: Correct")
 print()
-print("Tests de performance")
+print("Tests de performance sur le dataset " + TEST_TYPE.replace("/","\""))
 print()
-test_files.sort(key = lambda x: int(x.replace("TH","").replace(".dat","")))
+#test_files.sort(key = lambda x: int(x.replace("TH","").replace(".dat","")))
 ml = max([len(s) for s in algorithms])
 header = " " * max([len(s) for s in algorithms])
 
@@ -205,7 +218,7 @@ for algorithm in algorithms:
         if has_failed:
             cur_results[test_file] = {"time" : -1}
         else:
-            cur_results[test_file] = exec_test(algorithm,"./data" + TEST_TYPE + test_file,executable)
+            cur_results[test_file] = exec_test(algorithm,"C/data" + TEST_TYPE + test_file,executable)
             if(cur_results[test_file]["time"] == -1):
                 has_failed = True
 
