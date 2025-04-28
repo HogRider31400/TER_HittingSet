@@ -69,15 +69,20 @@ iList* parse_line(char *line, int size) {
     int cur_nb = 0;
 
     for (int i = 0; i < size; i++) {
-        if (line[i] == '\n') break;
+        if ((line[i] == '\n') || (line[i] == '|') || (line[i] == '#')) break;
         //Si c'est un espace on reset et on ajoute le nombre construit à la liste
-        if (line[i] == ' ') {
+        if ((line[i] == ' ') && (cur_nb != 0)) {
             append(list,cur_nb);
             cur_nb = 0;
         }
-        else {
+        if (line[i] != ' ') {
             //Ce n'est pas un espace donc à priori c'est un chiffre, on vérifie bien que c'est un chiffre
             //puis on l'ajoute au nombre construit
+            if (line[i] < '0' || line[i] > '9') {
+                printf("Erreur lecture du fichier: ('%c') n'est pas un chiffre\n",line[i]);
+                free_list(list);
+                return NULL;
+            }
             int cur_digit = line[i] - '0';
 
             cur_nb = cur_nb*10 +  cur_digit;
