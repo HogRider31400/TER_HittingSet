@@ -94,6 +94,18 @@ bitmap_list* create_bitmap_list() {
     return c_bitmap_list;
 }
 
+void free_bitmap_list(bitmap_list* b_list) {
+    bitmap_node* cur = b_list->head;
+    bitmap_node* next;
+    while (cur != NULL) {
+        next = cur->next;
+        free_bitmap(cur->value);
+        free(cur);
+        cur = next;
+    }
+    free(b_list);
+}
+
 void add_bitmap(bitmap_list* c_bitmap_list, bitmap* c_bitmap) {
     if (c_bitmap_list->size == 0) {
         c_bitmap_list->size = 1;

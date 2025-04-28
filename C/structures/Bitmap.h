@@ -34,6 +34,7 @@ bitmap* bitmap_or(bitmap* b1, bitmap* b2);
 int is_bequal(bitmap* b1, bitmap* b2);
 
 bitmap_list* create_bitmap_list();
+void free_bitmap_list(bitmap_list* b_list);
 void add_bitmap(bitmap_list* c_bitmap_list, bitmap* c_bitmap);
 void print_bitmaps(bitmap_list* c_bitmap_list);
 int has_bsubset(bitmap_list* b1, bitmap* b2);
