@@ -1,8 +1,9 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include "naive_from_full.h"
 
 // Vérifie si l'ensemble donné couvre toutes les arêtes du graphe
-int covers(Graph* graph, iList* vertices) {
+int ff_covers(Graph* graph, iList* vertices) {
     for (int i = 0; i < graph->nb_edges; i++) {
         int edge_covered = 0;
         for (Node* cur = graph->edges[i]->vertices->head; cur != NULL; cur = cur->next) {
@@ -17,7 +18,7 @@ int covers(Graph* graph, iList* vertices) {
 }
 
 // Fonction récursive pour énumérer toutes les couvertures minimales
-void enum_covers_recursive(Graph* graph, iList* cur_covered_vertices, iList* cur_used_vertices) {
+void ff_enum_covers_recursive(Graph* graph, iList* cur_covered_vertices, iList* cur_used_vertices) {
     for (Node* vertice_node = cur_used_vertices->head; vertice_node != NULL; vertice_node = vertice_node->next) {
         int vertice = vertice_node->value;
 
@@ -34,12 +35,12 @@ void enum_covers_recursive(Graph* graph, iList* cur_covered_vertices, iList* cur
         }
 
         // Vérifie si le nouvel ensemble reste une couverture
-        if (covers(graph, new_covered_vertices)) {
+        if (ff_covers(graph, new_covered_vertices)) {
             // Affiche la couverture trouvée
             print_list(new_used_vertices);
             printf(" est un transversal minimal\n");
 
-            enum_covers_recursive(graph, new_covered_vertices, new_used_vertices);
+            ff_enum_covers_recursive(graph, new_covered_vertices, new_used_vertices);
         }
 
         // Free memory
@@ -60,7 +61,7 @@ void enum_covers(Graph* graph) {
         append(initial_used_vertices, graph->vertices[i]->id);
     }
 
-    enum_covers_recursive(graph, initial_covered_vertices, initial_used_vertices);
+    ff_enum_covers_recursive(graph, initial_covered_vertices, initial_used_vertices);
 
     // Free memory
     free(initial_covered_vertices);
