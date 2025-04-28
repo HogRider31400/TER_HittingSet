@@ -93,6 +93,37 @@ int contains(iList* elems, int elem_value) {
     return 0;
 }
 
+// Vérifie si une liste1 contient une valeur de la liste2
+int contains_any(iList* list1, iList* list2) {
+    for (Node* cur = list2->head; cur != NULL; cur = cur->next) {
+        if (contains(list1, cur->value)) {
+            return 1;
+        }
+    }
+    return 0;
+}
+
+// Vérifie si deux listes sont égales
+int is_equal(iList* list1, iList* list2) {
+    if (list1->size != list2->size) return 0;
+    for (Node* cur = list1->head; cur != NULL; cur = cur->next) {
+        if (!contains(list2, cur->value)) {
+            return 0;
+        }
+    }
+    return 1;
+}
+
+// Vérifie si une liste est un superset d'une autre
+int is_superset(iList* list1, iList* list2) {
+    for (Node* cur = list2->head; cur != NULL; cur = cur->next) {
+        if (!contains(list1, cur->value)) {
+            return 0;
+        }
+    }
+    return 1;
+}
+
 iList* deep_copy(iList* list) {
     iList* new_list = create_list();
     Node* current = list->head;
@@ -202,6 +233,49 @@ void bubble_sort_list(iListList* list) {
 
     }
 
+}
+
+int is_equal_list(iListList* list1, iListList* list2) {
+    if (list1->size != list2->size) return 0;
+    for (NodeList* cur = list1->head; cur != NULL; cur = cur->next) {
+        if (!contains_list(list2, cur->value)) {
+            return 0;
+        }
+    }
+    return 1;
+}
+
+// Vérifie si une liste de listes contient une liste spécifique
+int contains_list(iListList* list, iList* sublist) {
+    for (NodeList* cur = list->head; cur != NULL; cur = cur->next) {
+        if (is_equal(cur->value, sublist)) {
+            return 1;
+        }
+    }
+    return 0;
+}
+
+// Vérifie si une liste de listes contient une liste spécifique qui est un singleton
+int contains_list_singl(iListList* list, iList* sublist) {
+    for (NodeList* cur = list->head; cur != NULL; cur = cur->next) {
+        if (cur->value->size != 1) {
+            continue;
+        }
+        if (is_equal(cur->value, sublist)) {
+            return 1;
+        }
+    }
+    return 0;
+}
+
+// Vérifie si une liste de listes contient un superset d'une liste spécifique
+int contains_superset(iListList* list, iList* sublist) {
+    for (NodeList* cur = list->head; cur != NULL; cur = cur->next) {
+        if (is_superset(sublist, cur->value)) {
+            return 1;
+        }
+    }
+    return 0;
 }
 
 void free_list_list(iListList* list) {

@@ -23,7 +23,7 @@ void DL_algorithm(Graph* graph) {
             }
         }
 
-        // On récupère les sommets couverts par Trguaranteed
+        // On récupère les sommets couverts par leur singleton dans Trguaranteed
         iList* ecovered_i = create_list();
         for (Node* cur = graph->edges[i]->vertices->head; cur != NULL; cur = cur->next) {
             iList* singleton = create_list();
@@ -70,59 +70,10 @@ void DL_algorithm(Graph* graph) {
         // Actualise le dual
         free_list_list(Tr_Hi);
         Tr_Hi = Trguaranteed;
+        //print_list_list(Tr_Hi);
+        //printf("---------%d--------- DL\n", i);
     }
 
     print_list_list(Tr_Hi);
     free_list_list(Tr_Hi);
-}
-
-// Vérifie si une liste contient un élément
-int contains_any(iList* list, iList* sublist) {
-    for (Node* cur = sublist->head; cur != NULL; cur = cur->next) {
-        if (contains(list, cur->value)) {
-            return 1;
-        }
-    }
-    return 0;
-}
-
-// Vérifie si une liste de listes contient une liste spécifique
-int contains_list(iListList* list, iList* sublist) {
-    for (NodeList* cur = list->head; cur != NULL; cur = cur->next) {
-        if (is_equal(cur->value, sublist)) {
-            return 1;
-        }
-    }
-    return 0;
-}
-
-// Vérifie si une liste de listes contient un superset d'une liste spécifique
-int contains_superset(iListList* list, iList* sublist) {
-    for (NodeList* cur = list->head; cur != NULL; cur = cur->next) {
-        if (is_superset(sublist, cur->value)) {
-            return 1;
-        }
-    }
-    return 0;
-}
-
-// Vérifie si deux listes sont égales
-int is_equal(iList* l1, iList* l2) {
-    if (l1->size != l2->size) return 0;
-    for (Node* cur = l1->head; cur != NULL; cur = cur->next) {
-        if (!contains(l2, cur->value)) {
-            return 0;
-        }
-    }
-    return 1;
-}
-
-// Vérifie si une liste est un superset d'une autre
-int is_superset(iList* l1, iList* l2) {
-    for (Node* cur = l2->head; cur != NULL; cur = cur->next) {
-        if (!contains(l1, cur->value)) {
-            return 0;
-        }
-    }
-    return 1;
 }
