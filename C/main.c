@@ -1,16 +1,11 @@
 #include <stdio.h>
 #include <time.h>
 #include <windows.h>
-#include "algorithms/naive.h"
+#include <string.h>
+#include "algorithms/algos.h"
 #include "graph_reader.h"
 #include "structures/Queue.h"
-#include "algorithms/berge.h"
-#include "algorithms/DL.h"
-#include <string.h>
 #include "structures/Bitmap.h"
-#include "algorithms/BMR.h"
-#include "algorithms/berge_bitmap.h"
-#include "algorithms/BMR_bitmap.h"
 
 iListList* globalTransversals = NULL;
 //Prend en paramètre une fonction qui prend un graphe un paramètre et l'appelle pour la chronométrer
@@ -50,6 +45,21 @@ void launch_naive_empty(Graph* graph) {
     //printf("Fin\n");
 }
 
+double test_launcher(char* algo, Graph* graph, a_Graph* agraph) {
+    if (strcmp(algo,"naive_recursive") == 0) return chrono_func(launch_naive_empty, graph);
+        if (strcmp(algo,"naive_iterative") == 0) return chrono_func(enum_covers_iterative, graph);
+        if (strcmp(algo,"berge") == 0) return chrono_func(berge_algorithm, graph);
+        if (strcmp(algo, "naive_iterative_array") == 0) return chrono_func(enum_covers_iterative_array, graph);
+        if (strcmp(algo, "dong_li") == 0) return chrono_func(DL_algorithm, graph);
+        if (strcmp(algo, "naive_iterative_array_2") == 0) return chrono_func_2(enum_covers_iterative_array_2, agraph);
+        if (strcmp(algo, "berge_bitmap") == 0) return chrono_func(berge_bitmap_algorithm, graph);
+        if (strcmp(algo, "DL_opti") == 0) return chrono_func(DL_opti, graph);
+        if (strcmp(algo, "DL_singl") == 0) return chrono_func(DL_singl, graph);
+        if (strcmp(algo, "DL_Trgf") == 0) return chrono_func(DL_Trgf, graph);
+        if (strcmp(algo, "DL_Trgn") == 0) return chrono_func(DL_Trgn, graph);
+        if (strcmp(algo, "DL_fopti") == 0) return chrono_func(DL_fopti, graph);
+        if (strcmp(algo, "DL_foptiv") == 0) return chrono_func(DL_foptiv, graph);
+}
 
 int main(int argc, char *argv[]) {
     /*bitmap_list* bitmaps = create_bitmap_list();
@@ -96,13 +106,7 @@ int main(int argc, char *argv[]) {
     double time_spent = 0;
     if (argc >= 2) {
         char* cur = argv[1];
-        if (strcmp(cur,"naive_recursive") == 0) time_spent = chrono_func(launch_naive_empty, graph);
-        if (strcmp(cur,"naive_iterative") == 0) time_spent = chrono_func(enum_covers_iterative, graph);
-        if (strcmp(cur,"berge") == 0) time_spent = chrono_func(berge_algorithm, graph);
-        if (strcmp(cur, "naive_iterative_array") == 0) time_spent = chrono_func(enum_covers_iterative_array, graph);
-        if (strcmp(cur, "dong_li") == 0) time_spent = chrono_func(DL_algorithm, graph);
-        if (strcmp(cur, "naive_iterative_array_2") == 0) time_spent = chrono_func_2(enum_covers_iterative_array_2, agraph);
-        if (strcmp(cur, "berge_bitmap") == 0) time_spent = chrono_func(berge_bitmap_algorithm, graph);
+        time_spent = test_launcher(cur, graph, agraph);
 
         //printf("%s\n", cur);
     }
