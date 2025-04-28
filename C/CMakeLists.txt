@@ -3,23 +3,17 @@ project(C C)
 
 set(CMAKE_C_STANDARD 23)
 file(COPY ${CMAKE_SOURCE_DIR}/data DESTINATION ${CMAKE_BINARY_DIR})
-add_executable(C main.c
-        structures/List.c
-        HGraph.c
-        algorithms/naive.c
-        graph_reader.c
-        structures/List.h
-        HGraph.h
-        graph_reader.h
-        algorithms/naive.h
-        structures/Queue.c
-        structures/Queue.h
-        algorithms/berge.c
-        algorithms/berge.h
-        algorithms/DL.c
-        algorithms/DL.h
-        structures/bitmap.c
-        structures/Bitmap.h
-        algorithms/berge_bitmap.c
-        algorithms/berge_bitmap.h
-)
+
+file(GLOB_RECURSE SOURCES "${CMAKE_SOURCE_DIR}/*.c")
+file(GLOB_RECURSE HEADERS "${CMAKE_SOURCE_DIR}/*.h")
+
+list(FILTER SOURCES EXCLUDE REGEX ".*/CMakeFiles/.*")
+list(REMOVE_ITEM SOURCES "${CMAKE_SOURCE_DIR}/test.c") # Celui-ci j'ai pas réussi à le faire compiler
+
+find_package(Python3 REQUIRED COMPONENTS Development)
+
+include_directories(${Python3_INCLUDE_DIRS})
+link_directories(${Python3_LIBRARY_DIRS})
+
+add_executable(C ${SOURCES} ${HEADERS})
+target_link_libraries(C ${Python3_LIBRARIES})
